@@ -1,10 +1,57 @@
 import React from "react";
+import Modal from "react-modal";
 import { useHistory } from "react-router";
 
 const Checkout = () => {
   const history = useHistory();
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
   return (
     <div className="bg-white flex h-screen flex-row">
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{
+          content: {
+            backgroundColor: "#ffffff",
+            width: "50%",
+            margin: "0 auto",
+          },
+          overlay: {
+            backgroundColor: "#0009",
+          },
+        }}
+        contentLabel="Example Modal"
+      >
+        <button onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+        <form>
+          <input />
+          <button>tab navigation</button>
+          <button>stays</button>
+          <button>inside</button>
+          <button>the modal</button>
+        </form>
+      </Modal>
+
       <div className="bg-red-100 p-8">
         <div className="py-4 bg-gray-2">Logo</div>
         <div className="mt-2">
@@ -55,7 +102,10 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <button className="mt-4 bg-blue-600 p-3 rounded-full hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center">
+              <button
+                onClick={openModal}
+                className="mt-4 bg-blue-600 p-3 rounded-full hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center"
+              >
                 Pilih Alamat Lain
               </button>
               <hr className="border-4 border-gray-100 mt-4" />

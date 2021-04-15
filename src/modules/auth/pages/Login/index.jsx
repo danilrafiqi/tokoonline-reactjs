@@ -1,15 +1,15 @@
+import {
+  useAuthActionSelector,
+  useLoginLoading,
+} from "@commons/redux/auth/selector";
+import { authAction } from "@commons/redux/auth/slice";
+import { Spinner } from "@components/atoms/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
-import {
-  useAuthActionSelector,
-  useLoginLoading,
-} from "../../../../commons/redux/auth/selector";
-import { authAction } from "../../../../commons/redux/auth/slice";
-import { Spinner } from "../../../../components/atoms";
 
 const schema = yup.object().shape({
   email: yup.string().required("Email Required"),

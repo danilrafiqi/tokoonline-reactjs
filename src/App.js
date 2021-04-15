@@ -1,8 +1,10 @@
+import Modal from "react-modal";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./commons/redux/store";
 import Router from "./Router";
 
+Modal.setAppElement("#root");
 function App() {
   return (
     <Provider store={store}>
