@@ -85,14 +85,14 @@ const ProductDetail = () => {
               <span>Stock: </span>
               <span className="font-normal">4</span>
             </div>
-            <div className="text-gray-500 mb-4">
+            <div className="text-gray-500 my-4">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
               saepe expedita minima. Id quam optio at facere culpa? Veniam
               labore inventore quis exercitationem obcaecati saepe iure neque
               vel? Aliquid, voluptate.
             </div>
 
-            <div className="flex flex-row">
+            <div className="flex flex-row mt-10">
               <button className="bg-blue-600 py-3 rounded-full w-12 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center mr-2">
                 -
               </button>

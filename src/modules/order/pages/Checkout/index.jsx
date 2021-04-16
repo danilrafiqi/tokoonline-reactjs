@@ -34,6 +34,8 @@ const Checkout = () => {
             backgroundColor: "#ffffff",
             width: "50%",
             margin: "0 auto",
+            borderRadius: 10,
+            padding: 40,
           },
           overlay: {
             backgroundColor: "#0009",
@@ -41,18 +43,41 @@ const Checkout = () => {
         }}
         contentLabel="Example Modal"
       >
+        <div className="font-semibold text-2xl text-center">
+          Pilih Alamat Pengiriman
+        </div>
+        <button className="w-full border-gray-300 border border-dashed p-5 rounded-xl font-semibold text-gray-500 mt-8">
+          Tambah Alamat Baru
+        </button>
+
+        <div className="mt-8">
+          {Array.from(Array(6).keys()).map((i) => {
+            return (
+              <div className="border text-gray-500 p-4 rounded-xl border-blue-300 my-2 flex flex-row justify-between items-center">
+                <div>
+                  <div className="font-bold text-gray-900">
+                    Muhamad Danil Rafiqi
+                  </div>
+                  <div className="text-gray-700">085788598869</div>
+                  <div>Rumah paling elit</div>
+                  <div>
+                    Bandar Sakti, Kec. Abung Surakarta, Kab. Lampung Utara,34581
+                  </div>
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="bg-blue-600 p-2 px-6 rounded-full hover:bg-blue-500 text-white flex items-center justify-center"
+                >
+                  Pilih
+                </button>
+              </div>
+            );
+          })}
+        </div>
         <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
       </Modal>
 
-      <div className="bg-red-100 p-8">
+      <div className="bg-red-100 p-8 w-64">
         <div className="py-4 bg-gray-2">Logo</div>
         <div className="mt-2">
           <div className="font-bold text-2xl mb-6">Categories</div>
@@ -93,9 +118,11 @@ const Checkout = () => {
           <div className="flex-1 mr-8">
             <div>
               <div>Alamat Pengiriman</div>
-              <div className="border border-l-0 border-r-0 py-4">
-                <div>Muhamad Danil Rafiqi</div>
-                <div>085788598869</div>
+              <div className="border border-l-0 border-r-0 py-4 text-gray-500">
+                <div className="font-bold text-gray-900">
+                  Muhamad Danil Rafiqi
+                </div>
+                <div className="text-gray-700">085788598869</div>
                 <div>Rumah paling elit</div>
                 <div>
                   Bandar Sakti, Kec. Abung Surakarta, Kab. Lampung Utara,34581
@@ -104,7 +131,7 @@ const Checkout = () => {
 
               <button
                 onClick={openModal}
-                className="mt-4 bg-blue-600 p-3 rounded-full hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center"
+                className="mt-4 bg-blue-600 p-3 rounded-full hover:bg-blue-500 text-white flex items-center justify-center"
               >
                 Pilih Alamat Lain
               </button>
