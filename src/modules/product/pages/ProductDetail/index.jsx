@@ -1,58 +1,14 @@
+import { BackButton } from "@components/atoms/index";
+import Dashboard from "@components/templates/Dashboard/index";
 import React from "react";
 import { useHistory } from "react-router";
 
 const ProductDetail = () => {
   const history = useHistory();
   return (
-    <div className="bg-white flex h-screen flex-row">
-      <div className="bg-red-100 p-8">
-        <div className="py-4 bg-gray-2">Logo</div>
-        <div className="mt-2">
-          <div className="font-bold text-2xl mb-6">Categories</div>
-          {Array.from(Array(6).keys()).map((i) => {
-            return (
-              <div key={i} className="my-2">
-                programming
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="w-full p-8 flex flex-1 flex-col">
-        {/* //#region Header  */}
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-row">
-            <input
-              type="text"
-              placeholder="Search . . ."
-              className="p-4 rounded-full bg-gray-2 border-none w-80 mr-4"
-            />
-            <button className="bg-blue-600 py-4 rounded-full w-14 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center">
-              oo
-            </button>
-          </div>
-          <div className="flex flex-row">
-            <button className="bg-blue-600 py-4 rounded-full w-14 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center mr-4">
-              oo
-            </button>
-            <button className="bg-blue-600 py-4 rounded-full w-14 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center">
-              oo
-            </button>
-          </div>
-        </div>
-        {/* //#endregion */}
-
-        {/* //#region BACK */}
-        <div className="flex flex-row my-8 items-center">
-          <button
-            onClick={() => history.goBack()}
-            className="bg-blue-600 py-2 rounded-full w-10 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center"
-          >
-            oo
-          </button>
-          <div className="ml-4 text-2xl font-bold">Back</div>
-        </div>
-        {/* //#endregion */}
+    <Dashboard>
+      <div className="overflow-scroll pr-8">
+        <BackButton className="my-8" />
         {/* //#region PRODUCTS */}
         <div className="mt-4 flex flex-row">
           <div className="w-96">
@@ -117,9 +73,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
-        {/* //#endregion */}
       </div>
-    </div>
+      {/* //#endregion */}
+    </Dashboard>
   );
 };
 
