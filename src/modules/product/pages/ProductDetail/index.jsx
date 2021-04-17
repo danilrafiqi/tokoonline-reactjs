@@ -1,10 +1,12 @@
-import { BackButton } from "@components/atoms/index";
+import { BackButton, Button } from "@components/atoms/index";
+import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 
 const ProductDetail = () => {
   const history = useHistory();
+  const [total, setTotal] = useState(1);
   return (
     <Dashboard>
       <div className="overflow-scroll pr-8">
@@ -49,27 +51,9 @@ const ProductDetail = () => {
             </div>
 
             <div className="flex flex-row mt-10">
-              <button className="bg-blue-600 py-3 rounded-full w-12 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center mr-2">
-                -
-              </button>
-              <button
-                className="bg-blue-600 py-3 rounded-full w-12 text-white shadow-2xl flex items-center justify-center cursor-text "
-                disabled
-              >
-                2
-              </button>
-              <button className="bg-blue-600 py-3 rounded-full w-12 hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center mx-2">
-                +
-              </button>
-              <button className="bg-blue-600 p-3 rounded-md hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center ml-10">
-                Add to Cart
-              </button>
-              <button
-                onClick={() => history.push("/cart")}
-                className="bg-blue-600 p-3 rounded-md hover:bg-blue-500 text-white shadow-2xl flex items-center justify-center mx-2"
-              >
-                Buy Now
-              </button>
+              <CartButton total={total} onClick={setTotal} />
+              <Button className="ml-6 mr-0.5">Add to Cart</Button>
+              <Button onClick={() => history.push("/cart")}>Buy Now</Button>
             </div>
           </div>
         </div>

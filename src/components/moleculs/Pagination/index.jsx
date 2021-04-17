@@ -19,13 +19,13 @@ const Pagination = ({ active = 1, limit = 1, onClick }) => {
     <div className="flex flex-row justify-center">
       {console.log("activeGtOne", activeGtOne)}
       <CircleButton
-        className={`mx-0.5  ${!activeGtOne ? "pointer-events-none" : ""}`}
+        className={`${!activeGtOne ? "pointer-events-none" : ""}`}
         onClick={() => onClick(active - 1)}
       >
         <IoChevronBack />
       </CircleButton>
       {showFirst && (
-        <CircleButton className="" onClick={() => onClick(active - 2)}>
+        <CircleButton className="mx-0.5" onClick={() => onClick(active - 2)}>
           {active - 2}
         </CircleButton>
       )}
@@ -38,19 +38,18 @@ const Pagination = ({ active = 1, limit = 1, onClick }) => {
       <CircleButton className="mx-0.5 bg-gray-500" labelClassName="text-white">
         {active}
       </CircleButton>
-
       {showBeforeLast && (
         <CircleButton className="" onClick={() => onClick(active + 1)}>
           {active + 1}
         </CircleButton>
       )}
       {showLast && (
-        <CircleButton className="" onClick={() => onClick(active + 2)}>
+        <CircleButton className="mx-0.5" onClick={() => onClick(active + 2)}>
           {active + 2}
         </CircleButton>
       )}
       <CircleButton
-        className={`mx-0.5  ${activeEqualLimit ? "pointer-events-none" : ""}`}
+        className={`${activeEqualLimit ? "pointer-events-none" : ""}`}
         onClick={() => onClick(active + 1)}
       >
         <IoChevronForward />

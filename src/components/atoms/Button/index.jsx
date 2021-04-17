@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React from "react";
 
-const CircleButton = ({ onClick, children, className, labelClassName }) => {
+const Button = ({ onClick, children, className, labelClassName }) => {
   const classes = classNames(
     className,
-    `bg-gray-2 text-gray-500 w-12 h-12 rounded-full hover:bg-gray-200 flex items-center justify-center`
+    `bg-blue-500 p-3 px-6 rounded-full hover:bg-blue-400 text-white flex items-center justify-center`
   );
   return (
     <button onClick={onClick} className={classes}>
@@ -13,4 +13,4 @@ const CircleButton = ({ onClick, children, className, labelClassName }) => {
   );
 };
 
-export default CircleButton;
+export default Button;

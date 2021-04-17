@@ -26,12 +26,12 @@ const Dashboard = (props) => {
               placeholder="Search . . ."
               className="p-4 rounded-full bg-gray-2 border-none w-80 mr-4"
             />
-            <button className="bg-gray-2 py-4 rounded-full w-14 hover:bg-gray-3 text-gray-600 flex items-center justify-center">
+            <button className="bg-gray-2 py-4 rounded-full w-14 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
               <IoSearch />
             </button>
           </div>
           <div className="flex flex-row">
-            <button className="bg-gray-2 py-4 rounded-full w-14 hover:bg-gray-3 text-gray-600 flex items-center justify-center">
+            <button className="bg-gray-2 py-4 rounded-full w-14 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
               <IoCartOutline />
             </button>
 
