@@ -3,6 +3,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
+import { tokenInterceptor } from "./middleware";
 import reducer from "./reducer";
 import { rootSaga } from "./saga";
 
@@ -18,7 +19,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: [sagaMiddleware],
+  middleware: [tokenInterceptor, sagaMiddleware],
   devTools: true,
 });
 

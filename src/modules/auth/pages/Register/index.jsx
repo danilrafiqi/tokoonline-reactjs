@@ -74,7 +74,7 @@ const Register = () => {
           <div>If you have an account</div>
           <div className="mt-3">
             you can{" "}
-            <Link to="/Register" className="text-blue-700 font-medium">
+            <Link to="/login" className="text-blue-700 font-medium">
               Signin Here
             </Link>
           </div>
