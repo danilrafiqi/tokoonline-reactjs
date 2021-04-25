@@ -1,13 +1,33 @@
 import { BackButton, Button } from "@components/atoms/index";
 import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import React, { useState } from "react";
+import { useCarts } from "commons/redux/cart/selector";
+import { cartAction } from "commons/redux/cart/slice";
+import { currencyFormat } from "commons/utils/index";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import "./index.css";
 
 const CartList = () => {
   const history = useHistory();
-  const [total, setTotal] = useState(1);
+  const dispatch = useDispatch();
+  const cartList = useCarts();
+
+  const handleFetchCarts = useCallback(() => {
+    dispatch(cartAction.cartsFetch());
+  }, [dispatch]);
+
+  const handleUpdateCart = useCallback(
+    (param) => {
+      dispatch(cartAction.updateCartFetch(param));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    handleFetchCarts();
+  }, []);
 
   return (
     <Dashboard>
@@ -17,38 +37,39 @@ const CartList = () => {
         <div className="mt-8 flex flex-row justify-between">
           {/* //#region LIST CART */}
           <div className="mr-8">
-            {Array.from(Array(13).keys()).map((i) => {
+            {cartList.map((data, i) => {
               return (
-                <div className="flex flex-row">
+                <div key={i} className="flex flex-row">
                   <div
                     onClick={() => {
-                      history.push("/product/" + i);
+                      history.push("/product/" + data.id);
                     }}
-                    key={i}
+                    key={data.product.name}
                     className="w-32 h-32 mb-4"
                   >
                     <img
                       className="rounded-2xl "
-                      src="https://placeimg.com/200/200/any"
+                      src={data.product.image}
                     ></img>
                   </div>
 
                   <div className="ml-8 flex-1 flex flex-col justify-start items-start">
                     <div className="text-xl text-gray-500 line-clamp-2">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Voluptates d Lorem ipsum dolor sit amet consectetur
-                      adipisicing elit. Id, doloremque repellat voluptas laborum
-                      atque eaque quas vitae eveniet eligendi delectus. Ex
-                      accusantium sequi dolorem. Ipsa quo fugiat culpa hic
-                      porro?
+                      {data.product.name}
                     </div>
                     <div className="font-bold text-xl text-gray-700 mb-4">
-                      10.000.000,-
+                      Rp.{currencyFormat(data.product.price)}
                     </div>
 
                     <CartButton
-                      total={total}
-                      onClick={setTotal}
+                      total={data.quantity}
+                      onClick={(val) => {
+                        handleUpdateCart({
+                          id: data.id,
+                          quantity: val,
+                          product_id: data.product.id,
+                        });
+                      }}
                       buttonClassName="cart__btn"
                     />
                   </div>

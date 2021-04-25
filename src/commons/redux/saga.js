@@ -1,9 +1,17 @@
 import { all } from "@redux-saga/core/effects";
+import { addressWatcher } from "./address/saga";
 import { authWatcher } from "./auth/saga";
+import { cartWatcher } from "./cart/saga";
 import { categoriesWatcher } from "./categories/saga";
 import { productsWatcher } from "./products/saga";
 
-const allWathcer = [...authWatcher, ...categoriesWatcher, ...productsWatcher];
+const allWathcer = [
+  ...authWatcher,
+  ...categoriesWatcher,
+  ...productsWatcher,
+  ...cartWatcher,
+  ...addressWatcher,
+];
 
 // WATCHER
 function* rootSaga() {

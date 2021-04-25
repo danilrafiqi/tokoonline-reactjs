@@ -1,12 +1,18 @@
 import { BackButton, Button } from "@components/atoms/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import React from "react";
+import { useAddressList } from "commons/redux/address/selector";
+import { addressAction } from "commons/redux/address/slice";
+import { useCarts } from "commons/redux/cart/selector";
+import { cartAction } from "commons/redux/cart/slice";
+import { currencyFormat } from "commons/utils/index";
+import sumBy from "lodash/sumBy";
+import React, { useCallback, useEffect } from "react";
 import Modal from "react-modal";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-
 const Checkout = () => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const [modalIsOpen, setIsOpen] = React.useState(false);
   function openModal() {
     setIsOpen(true);
@@ -16,22 +22,28 @@ const Checkout = () => {
     setIsOpen(false);
   }
 
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
+  const cartList = useCarts();
+  const addressList = useAddressList();
+
+  const handleFetchCarts = useCallback(() => {
+    dispatch(cartAction.cartsFetch());
+  }, [dispatch]);
+
+  const handleFetchAddress = useCallback(() => {
+    dispatch(addressAction.retrieveAddressFetch());
+  }, [dispatch]);
+
+  useEffect(() => {
+    handleFetchCarts();
+    handleFetchAddress();
+  }, []);
+
   return (
     <Dashboard>
       <div className="overflow-scroll pr-8">
-        <BackButton className="my-8 " />
+        <BackButton />
 
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between mt-8">
           <div className="flex-1 mr-8">
             <div>
               <div>Alamat Pengiriman</div>
@@ -53,7 +65,7 @@ const Checkout = () => {
             </div>
             {/* //#region LIST CART */}
             <div className="mt-8">
-              {Array.from(Array(13).keys()).map((i) => {
+              {cartList.map((data, i) => {
                 return (
                   <div className="flex flex-row">
                     <div
@@ -65,21 +77,19 @@ const Checkout = () => {
                     >
                       <img
                         className="rounded-2xl "
-                        src="https://placeimg.com/200/200/any"
+                        src={data.product.image}
                       ></img>
                     </div>
 
                     <div className="ml-8 flex-1 flex flex-col justify-start items-start">
                       <div className="text-xl text-gray-500 line-clamp-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Voluptates d Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Id, doloremque repellat voluptas
-                        laborum atque eaque quas vitae eveniet eligendi
-                        delectus. Ex accusantium sequi dolorem. Ipsa quo fugiat
-                        culpa hic porro?
+                        {data.product.description}
                       </div>
-                      <div className="font-bold text-xl text-gray-700 mb-4">
-                        10.000.000,-
+                      <div className="font-bold text-xl text-gray-700">
+                        Rp.{currencyFormat(data.product.price)},-
+                      </div>
+                      <div className="font-light text-gray-700 mb-4">
+                        x {data.quantity}
                       </div>
                     </div>
                   </div>
@@ -104,7 +114,15 @@ const Checkout = () => {
                 <div className="font-semibold mb-4">Ringkasan belanja</div>
                 <div className="text-gray-500 flex flex-row text-sm justify-between">
                   <div>Total Harga (3 barang)</div>
-                  <div>Rp.8.850.000,-</div>
+                  <div>
+                    Rp.{" "}
+                    {currencyFormat(
+                      sumBy(cartList, (data) => {
+                        return data.product.price * data.quantity;
+                      })
+                    )}
+                    ,-
+                  </div>
                 </div>
                 <hr className="my-4" />
                 <div className="font-semibold flex flex-row justify-between">
@@ -147,18 +165,17 @@ const Checkout = () => {
         </button>
 
         <div className="mt-8">
-          {Array.from(Array(6).keys()).map((i) => {
+          {addressList.map((data, i) => {
             return (
-              <div className="border text-gray-500 p-4 rounded-xl border-blue-300 my-2 flex flex-row justify-between items-center">
+              <div
+                key={i}
+                className="border text-gray-500 p-4 rounded-xl border-blue-300 my-2 flex flex-row justify-between items-center"
+              >
                 <div>
-                  <div className="font-bold text-gray-900">
-                    Muhamad Danil Rafiqi
-                  </div>
-                  <div className="text-gray-700">085788598869</div>
-                  <div>Rumah paling elit</div>
-                  <div>
-                    Bandar Sakti, Kec. Abung Surakarta, Kab. Lampung Utara,34581
-                  </div>
+                  <div className="font-bold text-gray-900">{data.name}</div>
+                  <div className="text-gray-700">{data.phone}</div>
+                  <div>{data.description}</div>
+                  <div>{data.address}</div>
                 </div>
                 <button
                   onClick={closeModal}
@@ -170,7 +187,6 @@ const Checkout = () => {
             );
           })}
         </div>
-        <button onClick={closeModal}>close</button>
       </Modal>
     </Dashboard>
   );
