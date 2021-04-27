@@ -14,6 +14,7 @@ const Checkout = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [addressSelected, setAddressSelected] = React.useState(0);
   function openModal() {
     setIsOpen(true);
   }
@@ -47,16 +48,18 @@ const Checkout = () => {
           <div className="flex-1 mr-8">
             <div>
               <div>Alamat Pengiriman</div>
-              <div className="border border-l-0 border-r-0 py-4 text-gray-500">
-                <div className="font-bold text-gray-900">
-                  Muhamad Danil Rafiqi
+              {addressList.length > 0 && (
+                <div className="border border-l-0 border-r-0 py-4 text-gray-500">
+                  <div className="font-bold text-gray-900">
+                    {addressList[addressSelected].name}
+                  </div>
+                  <div className="text-gray-700">
+                    {addressList[addressSelected].phone}
+                  </div>
+                  <div>{addressList[addressSelected].description}</div>
+                  <div>{addressList[addressSelected].address}</div>
                 </div>
-                <div className="text-gray-700">085788598869</div>
-                <div>Rumah paling elit</div>
-                <div>
-                  Bandar Sakti, Kec. Abung Surakarta, Kab. Lampung Utara,34581
-                </div>
-              </div>
+              )}
 
               <Button className="my-4" onClick={openModal}>
                 Pilih Alamat Lain
@@ -67,10 +70,10 @@ const Checkout = () => {
             <div className="mt-8">
               {cartList.map((data, i) => {
                 return (
-                  <div className="flex flex-row">
+                  <div className="flex flex-row" key={i}>
                     <div
                       onClick={() => {
-                        history.push("/product/" + i);
+                        history.push("/product/" + data.id);
                       }}
                       key={i}
                       className="w-32 h-32 mb-4"
@@ -178,7 +181,10 @@ const Checkout = () => {
                   <div>{data.address}</div>
                 </div>
                 <button
-                  onClick={closeModal}
+                  onClick={() => {
+                    closeModal();
+                    setAddressSelected(i);
+                  }}
                   className="bg-blue-600 p-2 px-6 rounded-full hover:bg-blue-500 text-white flex items-center justify-center"
                 >
                   Pilih
