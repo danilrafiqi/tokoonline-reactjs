@@ -1,19 +1,35 @@
-import { BackButton, Button } from "@components/atoms/index";
+import { BackButton, Button, Spinner } from "@components/atoms/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useAddressList } from "commons/redux/address/selector";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  useAddressAction,
+  useAddressList,
+  useCreateAddressLoading,
+} from "commons/redux/address/selector";
 import { addressAction } from "commons/redux/address/slice";
-import { useCarts } from "commons/redux/cart/selector";
+import { useCartsSelected } from "commons/redux/cart/selector";
 import { cartAction } from "commons/redux/cart/slice";
 import { currencyFormat } from "commons/utils/index";
 import sumBy from "lodash/sumBy";
 import React, { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  address: yup.string().required(),
+  phone: yup.string().required(),
+  description: yup.string().required(),
+});
+
 const Checkout = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalAddressIsOpen, setModalAddressIsOpen] = React.useState(false);
   const [addressSelected, setAddressSelected] = React.useState(0);
   function openModal() {
     setIsOpen(true);
@@ -22,9 +38,17 @@ const Checkout = () => {
   function closeModal() {
     setIsOpen(false);
   }
+  const openAddressModal = () => {
+    setModalAddressIsOpen(true);
+  };
+  const closeAddressModal = () => {
+    setModalAddressIsOpen(false);
+  };
 
-  const cartList = useCarts();
+  const cartList = useCartsSelected();
   const addressList = useAddressList();
+  const loading = useCreateAddressLoading();
+  const addressActionState = useAddressAction();
 
   const handleFetchCarts = useCallback(() => {
     dispatch(cartAction.cartsFetch());
@@ -34,10 +58,42 @@ const Checkout = () => {
     dispatch(addressAction.retrieveAddressFetch());
   }, [dispatch]);
 
+  const handleCreateAddress = useCallback(
+    (payload) => dispatch(addressAction.createAddressFetch(payload)),
+    [dispatch]
+  );
+
   useEffect(() => {
     handleFetchCarts();
     handleFetchAddress();
   }, []);
+
+  //#region WATCHER
+  useEffect(() => {
+    if (addressActionState === addressAction.createAddressSuccess.type) {
+      handleFetchAddress();
+      closeAddressModal();
+    }
+  }, [addressActionState]);
+  //#endregion
+
+  const totalBarang = sumBy(cartList, (data) => {
+    return data.quantity;
+  });
+
+  const totalPrice = currencyFormat(
+    sumBy(cartList, (data) => {
+      return data.product.price * data.quantity;
+    })
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   return (
     <Dashboard>
@@ -86,7 +142,7 @@ const Checkout = () => {
 
                     <div className="ml-8 flex-1 flex flex-col justify-start items-start">
                       <div className="text-xl text-gray-500 line-clamp-2">
-                        {data.product.description}
+                        {data.product.name}
                       </div>
                       <div className="font-bold text-xl text-gray-700">
                         Rp.{currencyFormat(data.product.price)},-
@@ -116,7 +172,7 @@ const Checkout = () => {
               <div className="mt-4">
                 <div className="font-semibold mb-4">Ringkasan belanja</div>
                 <div className="text-gray-500 flex flex-row text-sm justify-between">
-                  <div>Total Harga (3 barang)</div>
+                  <div>Total Harga ({totalBarang} barang)</div>
                   <div>
                     Rp.{" "}
                     {currencyFormat(
@@ -130,7 +186,7 @@ const Checkout = () => {
                 <hr className="my-4" />
                 <div className="font-semibold flex flex-row justify-between">
                   <div>Total</div>
-                  <div>Rp.8.850.000,-</div>
+                  <div>Rp.{totalPrice},-</div>
                 </div>
 
                 <Button className="w-full mt-4" onClick={openModal}>
@@ -163,7 +219,13 @@ const Checkout = () => {
         <div className="font-semibold text-2xl text-center">
           Pilih Alamat Pengiriman
         </div>
-        <button className="w-full border-gray-300 border border-dashed p-5 rounded-xl font-semibold text-gray-500 mt-8">
+        <button
+          className="w-full border-gray-300 border border-dashed p-5 rounded-xl font-semibold text-gray-500 mt-8"
+          onClick={() => {
+            openAddressModal();
+            closeModal();
+          }}
+        >
           Tambah Alamat Baru
         </button>
 
@@ -185,7 +247,7 @@ const Checkout = () => {
                     closeModal();
                     setAddressSelected(i);
                   }}
-                  className="bg-blue-600 p-2 px-6 rounded-full hover:bg-blue-500 text-white flex items-center justify-center"
+                  className="bg-blue-600 p-2 px-6 rounded-md hover:bg-blue-500 text-white flex items-center justify-center"
                 >
                   Pilih
                 </button>
@@ -193,6 +255,83 @@ const Checkout = () => {
             );
           })}
         </div>
+      </Modal>
+
+      <Modal
+        isOpen={modalAddressIsOpen}
+        onRequestClose={closeAddressModal}
+        style={{
+          content: {
+            backgroundColor: "#ffffff",
+            width: "50%",
+            margin: "0 auto",
+            borderRadius: 10,
+            padding: 40,
+          },
+          overlay: {
+            backgroundColor: "#0009",
+          },
+        }}
+        contentLabel="Example Modal"
+      >
+        <div className="font-semibold text-2xl text-center">
+          Tambah Alamat Baru
+        </div>
+
+        <form
+          className="flex flex-col mt-8 w-full"
+          onSubmit={handleSubmit(handleCreateAddress)}
+        >
+          <div className="flex flex-row w-full">
+            <input
+              name="name"
+              type="name"
+              placeholder="Input name"
+              className="flex-1 p-3 rounded-md bg-gray-2 border-none mt-6 mr-2"
+              {...register("name")}
+            />
+            {errors?.name && (
+              <div className="text-red-500">{errors?.name?.message}</div>
+            )}
+
+            <input
+              name="phone"
+              type="phone"
+              placeholder="Input phone"
+              className="flex-1 p-3 rounded-md bg-gray-2 border-none mt-6 ml-2"
+              {...register("phone")}
+            />
+            {errors?.phone && (
+              <div className="text-red-500">{errors?.phone?.message}</div>
+            )}
+          </div>
+
+          <input
+            name="address"
+            type="text"
+            placeholder="Input Address"
+            className="p-3 rounded-md bg-gray-2 border-none mt-6"
+            {...register("address")}
+          />
+          {errors?.address && (
+            <div className="text-red-500">{errors?.address?.message}</div>
+          )}
+
+          <textarea
+            name="description"
+            type="description"
+            placeholder="Input description"
+            className="h-40 p-3 rounded-md bg-gray-2 border-none mt-6"
+            {...register("description")}
+          />
+          {errors?.description && (
+            <div className="text-red-500">{errors?.description?.message}</div>
+          )}
+
+          <Button className="mt-10" onClick={openModal} type="submit">
+            {loading ? <Spinner className="mr-4" /> : "Simpan Alamat"}
+          </Button>
+        </form>
       </Modal>
     </Dashboard>
   );

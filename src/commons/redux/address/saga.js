@@ -13,10 +13,25 @@ function* retrieveAddressFetchWorker() {
   }
 }
 
+function* createAddressFetchWorker(action) {
+  try {
+    const res = yield call(axios.post, `${baseApi}/address`, {
+      address: action.payload.address,
+      description: action.payload.description,
+      name: action.payload.name,
+      phone: action.payload.phone,
+    });
+    yield put(addressAction.createAddressSuccess(res.data));
+  } catch (error) {
+    yield put(addressAction.createAddressFailed(error.response.data));
+  }
+}
+
 // WATCHER
 export const addressWatcher = [
   takeLatest(
     addressAction.retrieveAddressFetch.type,
     retrieveAddressFetchWorker
   ),
+  takeLatest(addressAction.createAddressFetch.type, createAddressFetchWorker),
 ];

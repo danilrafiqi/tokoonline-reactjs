@@ -31,6 +31,7 @@ const initialState = {
   action: "",
   cartList: [],
   cartPagination: [],
+  cartListSelected: [],
 };
 
 const cartSlice = createSlice({
@@ -138,6 +139,15 @@ const cartSlice = createSlice({
     cartDetailReset: (state, action) => ({
       ...state,
       ...cartDetailInitialState,
+      action: action.type,
+    }),
+    //#endregion
+
+    //#region carts
+    cartsSelectedUpdate: (state, action) => ({
+      ...state,
+      cartsLoading: false,
+      cartListSelected: action.payload,
       action: action.type,
     }),
     //#endregion

@@ -5,11 +5,12 @@ import { cartAction } from "commons/redux/cart/slice";
 import React, { useCallback, useEffect } from "react";
 import { IoCartOutline, IoPersonOutline, IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
   const cartList = useCarts();
+  const history = useHistory();
 
   const handleFetchCarts = useCallback(() => {
     dispatch(cartAction.cartsFetch());
@@ -41,7 +42,10 @@ const Dashboard = (props) => {
             </CircleButton>
           </div>
           <div className="flex flex-row">
-            <CircleButton className="w-14 h-14 mr-2 relative">
+            <CircleButton
+              onClick={() => history.push("/cart")}
+              className="w-14 h-14 mr-2 relative"
+            >
               {cartList.length > 0 && (
                 <div className="absolute -right-2 top-0 bg-red-600 text-white w-6 h-6 rounded-full">
                   {cartList.length}
@@ -49,7 +53,10 @@ const Dashboard = (props) => {
               )}
               <IoCartOutline />
             </CircleButton>
-            <CircleButton className="w-14 h-14">
+            <CircleButton
+              className="w-14 h-14"
+              onClick={() => history.push("/user/me")}
+            >
               <IoPersonOutline />
             </CircleButton>
           </div>

@@ -3,9 +3,10 @@ import CartRouter from "./carts";
 import MainRouter from "./main";
 import OrderRouter from "./orders";
 import ProductRouter from "./products";
+import UserRouter from "./users";
 
 const authenticatedRoutes = [
-  // ...UserRouter,
+  ...UserRouter,
   // ...CouponRouter,
   ...OrderRouter,
   ...CartRouter,

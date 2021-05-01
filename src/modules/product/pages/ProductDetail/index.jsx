@@ -1,7 +1,7 @@
 import { BackButton, Button, Spinner } from "@components/atoms/index";
 import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useAddCartLoading } from "commons/redux/cart/selector";
+import { useAddCartLoading, useCartAction } from "commons/redux/cart/selector";
 import { cartAction } from "commons/redux/cart/slice";
 import { useProductDetail } from "commons/redux/products/selector";
 import { productsAction } from "commons/redux/products/slice";
@@ -13,10 +13,12 @@ import { useHistory, useParams } from "react-router";
 const ProductDetail = () => {
   const history = useHistory();
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState("");
   const dispatch = useDispatch();
   const { id } = useParams();
   const productDetail = useProductDetail();
   const addCartLoading = useAddCartLoading();
+  const cartActionState = useCartAction();
 
   const handleFetchProductDetail = useCallback(
     (param) => {
@@ -45,6 +47,17 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(cartAction.addCartReset());
   }, [dispatch]);
+
+  //#region WATCHER
+  useEffect(() => {
+    if (
+      loading === "buyNow" &&
+      cartActionState === cartAction.addCartSuccess.type
+    ) {
+      history.push("/cart");
+    }
+  }, [cartActionState, history, loading]);
+  //#endregion
 
   return (
     <Dashboard>
@@ -93,15 +106,34 @@ const ProductDetail = () => {
                 <Button
                   className="ml-6 mr-0.5"
                   onClick={() => {
+                    setLoading("addToCart");
                     handleAddCart({
                       quantity: quantity,
                       product_id: id,
                     });
                   }}
                 >
-                  {addCartLoading ? <Spinner /> : "Add to Cart"}
+                  {addCartLoading && loading === "addToCart" ? (
+                    <Spinner />
+                  ) : (
+                    "Add to Cart"
+                  )}
                 </Button>
-                <Button onClick={() => history.push("/cart")}>Buy Now</Button>
+                <Button
+                  onClick={() => {
+                    setLoading("buyNow");
+                    handleAddCart({
+                      quantity: quantity,
+                      product_id: id,
+                    });
+                  }}
+                >
+                  {addCartLoading && loading === "buyNow" ? (
+                    <Spinner />
+                  ) : (
+                    "Buy Now"
+                  )}
+                </Button>
               </div>
             </div>
           </div>

@@ -6,8 +6,15 @@ const retrieveAddressInitialState = {
   retrieveAddressLoading: false,
 };
 
+const createAddressInitialState = {
+  createAddressRespons: undefined,
+  createAddressError: undefined,
+  createAddressLoading: false,
+};
+
 const initialState = {
   ...retrieveAddressInitialState,
+  ...createAddressInitialState,
   action: "",
   addressList: [],
   addressPagination: {},
@@ -39,6 +46,31 @@ const addressSlice = createSlice({
     retrieveAddressReset: (state, action) => ({
       ...state,
       ...retrieveAddressInitialState,
+      action: action.type,
+    }),
+    //#endregion
+
+    //#region createAddress
+    createAddressFetch: (state, action) => ({
+      ...state,
+      createAddressLoading: true,
+      action: action.type,
+    }),
+    createAddressSuccess: (state, action) => ({
+      ...state,
+      createAddressLoading: false,
+      createAddressError: action.payload,
+      action: action.type,
+    }),
+    createAddressFailed: (state, action) => ({
+      ...state,
+      createAddressLoading: true,
+      createAddressError: action.payload,
+      action: action.type,
+    }),
+    createAddressReset: (state, action) => ({
+      ...state,
+      ...createAddressInitialState,
       action: action.type,
     }),
     //#endregion
