@@ -4,6 +4,7 @@ import { authWatcher } from "./auth/saga";
 import { cartWatcher } from "./cart/saga";
 import { categoriesWatcher } from "./categories/saga";
 import { productsWatcher } from "./products/saga";
+import { userWatcher } from "./users/saga";
 
 const allWathcer = [
   ...authWatcher,
@@ -11,6 +12,7 @@ const allWathcer = [
   ...productsWatcher,
   ...cartWatcher,
   ...addressWatcher,
+  ...userWatcher,
 ];
 
 // WATCHER

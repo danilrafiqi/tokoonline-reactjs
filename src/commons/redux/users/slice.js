@@ -23,7 +23,7 @@ const initialState = {
   ...updateProfileInitialState,
   ...updatePasswordInitialState,
   action: "",
-  retrieveProfileData: {},
+  retrieveProfileData: undefined,
 };
 
 const userSlice = createSlice({
@@ -31,7 +31,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     //#region retrieveProfile
-    retrieveProfileFetch: (state, action) => ({
+    retrieveProfileExecute: (state, action) => ({
       ...state,
       retrieveProfileLoading: true,
       action: action.type,
@@ -45,7 +45,7 @@ const userSlice = createSlice({
     }),
     retrieveProfileFailed: (state, action) => ({
       ...state,
-      retrieveProfileLoading: true,
+      retrieveProfileLoading: false,
       retrieveProfileError: action.payload,
       action: action.type,
     }),
@@ -57,7 +57,7 @@ const userSlice = createSlice({
     //#endregion
 
     //#region updateProfile
-    updateProfileFetch: (state, action) => ({
+    updateProfileExecute: (state, action) => ({
       ...state,
       updateProfileLoading: true,
       action: action.type,
@@ -70,7 +70,7 @@ const userSlice = createSlice({
     }),
     updateProfileFailed: (state, action) => ({
       ...state,
-      updateProfileLoading: true,
+      updateProfileLoading: false,
       updateProfileError: action.payload,
       action: action.type,
     }),
@@ -82,7 +82,7 @@ const userSlice = createSlice({
     //#endregion
 
     //#region updatePassword
-    updatePasswordFetch: (state, action) => ({
+    updatePasswordExecute: (state, action) => ({
       ...state,
       updatePasswordLoading: true,
       action: action.type,
@@ -95,7 +95,7 @@ const userSlice = createSlice({
     }),
     updatePasswordFailed: (state, action) => ({
       ...state,
-      updatePasswordLoading: true,
+      updatePasswordLoading: false,
       updatePasswordError: action.payload,
       action: action.type,
     }),

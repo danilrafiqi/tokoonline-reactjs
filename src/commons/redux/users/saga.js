@@ -6,7 +6,7 @@ import { userAction } from "./slice";
 // WORKER
 function* retrieveProfileWorker() {
   try {
-    const res = yield call(axios.get, `${baseApi}/user/me`);
+    const res = yield call(axios.get, `${baseApi}/me`);
     yield put(userAction.retrieveProfileSuccess(res.data));
   } catch (error) {
     yield put(userAction.retrieveProfileFailed(error.response.data));
@@ -15,7 +15,7 @@ function* retrieveProfileWorker() {
 
 function* updateProfileWorker(action) {
   try {
-    const res = yield call(axios.post, `${baseApi}/profile/customers`, {
+    const res = yield call(axios.put, `${baseApi}/profile/customers`, {
       name: action.payload.name,
       phone: action.payload.phone,
     });
@@ -27,11 +27,11 @@ function* updateProfileWorker(action) {
 
 function* updatePasswordWorker(action) {
   try {
-    const res = yield call(axios.post, `${baseApi}/update-password`, {
+    const res = yield call(axios.put, `${baseApi}/update-password`, {
       oldPassword: action.payload.oldPassword,
       newPassword: action.payload.newPassword,
     });
-    yield put(userAction.updatePasswordWorker(res.data));
+    yield put(userAction.updatePasswordSuccess(res.data));
   } catch (error) {
     yield put(userAction.updatePasswordFailed(error.response.data));
   }
@@ -39,7 +39,7 @@ function* updatePasswordWorker(action) {
 
 // WATCHER
 export const userWatcher = [
-  takeLatest(userAction.retrieveProfileFetch.type, retrieveProfileWorker),
-  takeLatest(userAction.updateProfileFetch.type, updateProfileWorker),
-  takeLatest(userAction.updatePasswordFetch.type, updatePasswordWorker),
+  takeLatest(userAction.retrieveProfileExecute.type, retrieveProfileWorker),
+  takeLatest(userAction.updateProfileExecute.type, updateProfileWorker),
+  takeLatest(userAction.updatePasswordExecute.type, updatePasswordWorker),
 ];
