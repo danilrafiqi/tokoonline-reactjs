@@ -10,4 +10,7 @@ export const useRetrieveCouponListLoading = () => {
 export const useRetrieveCouponListData = () => {
   return useSelector((state) => state.coupon.retrieveCouponListData);
 };
+export const useRetrieveCouponListPagination = () => {
+  return useSelector((state) => state.coupon.retrieveCouponListPagination);
+};
 //#endregion

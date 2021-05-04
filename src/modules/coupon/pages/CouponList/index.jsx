@@ -2,6 +2,7 @@ import { SideBar } from "@components/organisms/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { useRetrieveCouponListData } from "commons/redux/coupon/selector";
 import { couponAction } from "commons/redux/coupon/slice";
+import CouponCard from "modules/coupon/components/CouponCard/index";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -24,8 +25,19 @@ const CouponList = () => {
         <div>
           <SideBar />
         </div>
-        {console.log("couponListData", couponListData)}
-        <div className="flex-1">asas</div>
+        <div className="grid grid-cols-3 gap-2 flex-1">
+          {console.log("couponListData", couponListData)}
+          {couponListData.map((data) => {
+            return (
+              <CouponCard
+                code={data.code}
+                description={data.description}
+                fixedDiscount={data.fixedDiscount}
+                percentage={data.percentage}
+              />
+            );
+          })}
+        </div>
       </div>
     </Dashboard>
   );
