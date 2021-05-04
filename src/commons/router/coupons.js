@@ -1,13 +1,10 @@
-import { MonetizationOn } from "@material-ui/icons";
-import UserList from "../../modules/users/pages/UserList";
+import CouponList from "modules/coupon/pages/CouponList/index";
 
 const CouponRouter = [
   {
     path: "/coupons",
     label: "Coupons",
-    component: UserList,
-    isMenu: true,
-    icon: MonetizationOn,
+    component: CouponList,
   },
 ];
 

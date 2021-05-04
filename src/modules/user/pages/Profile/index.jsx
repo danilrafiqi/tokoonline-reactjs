@@ -1,4 +1,5 @@
 import { Button, Spinner } from "@components/atoms/index";
+import { SideBar } from "@components/organisms/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -12,7 +13,6 @@ import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
 import * as yup from "yup";
 
 const updatePofileSchema = yup.object().shape({
@@ -79,29 +79,8 @@ const Profile = () => {
     <Dashboard>
       {profileData && (
         <div className="flex flex-row py-4">
-          {console.log("profileData", profileData)}
-          <div className="rounded-md shadow py-4 bg-white mr-4 h-auto w-56 flex flex-col">
-            <NavLink
-              to="/user/me"
-              className="my-1 py-4 font-light pl-4"
-              activeClassName="bg-blue-600 text-white"
-            >
-              Profile
-            </NavLink>
-            <NavLink
-              to="/order"
-              className="my-1 py-4 font-light pl-4"
-              activeClassName="bg-blue-600 text-white"
-            >
-              Order
-            </NavLink>
-            <NavLink
-              to="/coupon"
-              className="my-1 py-4 font-light pl-4"
-              activeClassName="bg-blue-600 text-white"
-            >
-              Coupon
-            </NavLink>
+          <div>
+            <SideBar />
           </div>
           <div className="flex-1">
             <div className="flex flex-row rounded-md shadow bg-white p-4">
