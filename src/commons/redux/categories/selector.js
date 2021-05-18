@@ -1,10 +1,16 @@
 import { useSelector } from "react-redux";
 
-export const useCategoriesctionSelector = () =>
-  useSelector((state) => state.categories.action);
-export const useCategoriesLoading = () => {
-  return useSelector((state) => state.categories.categoriesLoading);
+export const useCategoryAction = () =>
+  useSelector((state) => state.category.action);
+
+//#region retrieveCategoryList
+export const useRetrieveCategoryListLoading = () => {
+  return useSelector((state) => state.category.retrieveCategoryListLoading);
 };
-export const useCategories = () => {
-  return useSelector((state) => state.categories.categories);
+export const useRetrieveCategoryListData = () => {
+  return useSelector((state) => state.category.retrieveCategoryListData);
 };
+export const useRetrieveCategoryListPagination = () => {
+  return useSelector((state) => state.category.retrieveCategoryListPagination);
+};
+//#endregion

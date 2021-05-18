@@ -10,13 +10,13 @@ function* productsListWorker(action) {
     const query = qs.stringify(action.payload);
     const res = yield call(axios.get, `${baseApi}/products?${query}`);
 
-    yield put(productAction.retrieveProductListSuccess(res.data));
     yield put(productAction.retrieveProductListDataUpdate(res.data.data));
     if (res.data?.pagination?.total) {
       yield put(
         productAction.retrieveProductListPaginationUpdate(res.data.pagination)
       );
     }
+    yield put(productAction.retrieveProductListSuccess(res.data));
   } catch (error) {
     yield put(productAction.retrieveProductListFailed(error.response.data));
   }
@@ -28,9 +28,9 @@ function* productDetailWorker(action) {
       axios.get,
       `${baseApi}/products/${action.payload.id}`
     );
+    yield put(productAction.retrieveProductDetailDataUpdate(res.data));
     yield put(productAction.retrieveProductDetailSuccess(res.data));
   } catch (error) {
-    console.log("error", error);
     yield put(productAction.retrieveProductDetailFailed(error.response.data));
   }
 }

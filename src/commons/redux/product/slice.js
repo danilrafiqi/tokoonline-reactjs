@@ -10,11 +10,11 @@ const retrieveProductDetailInitialState = {
   retrieveProductDetailRespons: undefined,
   retrieveProductDetailError: undefined,
   retrieveProductDetailLoading: false,
-  retrieveProductDetail: {},
 };
 
 const initialState = {
   ...retrieveProductListInitialState,
+  ...retrieveProductDetailInitialState,
   action: "",
   retrieveProductListData: [],
   retrieveProductListPagination: {},
@@ -29,12 +29,10 @@ const productSlice = createSlice({
     retrieveProductListDataUpdate: (state, action) => ({
       ...state,
       retrieveProductListData: action.payload,
-      action: action.type,
     }),
     retrieveProductListPaginationUpdate: (state, action) => ({
       ...state,
       retrieveProductListPagination: action.payload,
-      action: action.type,
     }),
 
     retrieveProductListExecute: (state, action) => ({
@@ -50,7 +48,7 @@ const productSlice = createSlice({
     }),
     retrieveProductListFailed: (state, action) => ({
       ...state,
-      retrieveProductListLoading: true,
+      retrieveProductListLoading: false,
       retrieveProductListError: action.payload,
       action: action.type,
     }),
@@ -61,7 +59,12 @@ const productSlice = createSlice({
     }),
     //#endregion
 
-    //#region retrieveProductListDetail
+    //#region retrieveProductDetail
+    retrieveProductDetailDataUpdate: (state, action) => ({
+      ...state,
+      retrieveProductDetailData: action.payload,
+    }),
+
     retrieveProductDetailExecute: (state, action) => ({
       ...state,
       retrieveProductDetailLoading: true,
@@ -71,12 +74,11 @@ const productSlice = createSlice({
       ...state,
       retrieveProductDetailLoading: false,
       retrieveProductDetailRespons: action.payload,
-      retrieveProductDetailData: action.payload,
       action: action.type,
     }),
     retrieveProductDetailFailed: (state, action) => ({
       ...state,
-      retrieveProductDetailLoading: true,
+      retrieveProductDetailLoading: false,
       retrieveProductDetailError: action.payload,
       action: action.type,
     }),

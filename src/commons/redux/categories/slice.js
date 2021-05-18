@@ -1,49 +1,57 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const categoriesInitialState = {
-  categoriesRespons: undefined,
-  categoriesError: undefined,
-  categoriesLoading: false,
+const retrieveCategoryListInitialState = {
+  retrieveCategoryListRespons: undefined,
+  retrieveCategoryListError: undefined,
+  retrieveCategoryListLoading: false,
 };
 
 const initialState = {
-  ...categoriesInitialState,
+  ...retrieveCategoryListInitialState,
   action: "",
-  categories: [],
+  retrieveCategoryListData: [],
+  retrieveCategoryListPagination: {},
 };
 
-const categoriesSlice = createSlice({
-  name: "categories",
+const categorySlice = createSlice({
+  name: "category",
   initialState,
   reducers: {
-    //#region categories
-    categoriesFetch: (state, action) => ({
+    //#region retrieveCategoryList
+    retrieveCategoryListDataUpdate: (state, action) => ({
       ...state,
-      categoriesLoading: true,
+      retrieveCategoryListData: action.payload,
+    }),
+    retrieveCategoryListPaginationUpdate: (state, action) => ({
+      ...state,
+      retrieveCategoryListPagination: action.payload,
+    }),
+
+    retrieveCategoryListExecute: (state, action) => ({
+      ...state,
+      retrieveCategoryListLoading: true,
       action: action.type,
     }),
-    categoriesSuccess: (state, action) => ({
+    retrieveCategoryListSuccess: (state, action) => ({
       ...state,
-      categoriesLoading: false,
-      categories: action.payload,
+      retrieveCategoryListLoading: false,
+      retrieveCategoryListRespons: action.payload,
       action: action.type,
     }),
-    categoriesFailed: (state, action) => ({
+    retrieveCategoryListFailed: (state, action) => ({
       ...state,
-      categoriesLoading: true,
-      categoriesError: action.payload,
+      retrieveCategoryListLoading: false,
+      retrieveCategoryListError: action.payload,
       action: action.type,
     }),
-    categoriesReset: (state, action) => ({
+    retrieveCategoryListReset: (state, action) => ({
       ...state,
-      ...categoriesInitialState,
+      ...retrieveCategoryListInitialState,
       action: action.type,
     }),
     //#endregion
   },
 });
 
-export const {
-  actions: categoriesAction,
-  reducer: categoriesReducer,
-} = categoriesSlice;
+export const { actions: categoryAction, reducer: categoryReducer } =
+  categorySlice;

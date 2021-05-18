@@ -1,10 +1,10 @@
-import { useRetrieveProductListPagination } from "@commons/redux/products/selector";
+import { useRetrieveProductListPagination } from "@commons/redux/product/selector";
+import { productAction } from "@commons/redux/product/slice";
 import { Pagination } from "@components/moleculs/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useCategories } from "commons/redux/categories/selector";
-import { categoriesAction } from "commons/redux/categories/slice";
+import { useRetrieveCategoryListData } from "commons/redux/categories/selector";
+import { categoryAction } from "commons/redux/categories/slice";
 import { useRetrieveProductListData } from "commons/redux/products";
-import { productAction } from "commons/redux/products/slice";
 import { currencyFormat } from "commons/utils/index";
 import ProductCard from "modules/product/components/ProductCard/index";
 import React, { useCallback, useEffect, useState } from "react";
@@ -15,12 +15,12 @@ const ProductList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [pagination, setPagination] = useState(1);
-  const categories = useCategories();
+  const categoryList = useRetrieveCategoryListData();
   const productList = useRetrieveProductListData();
   const productPagination = useRetrieveProductListPagination();
 
   const handleFetchCategories = useCallback(() => {
-    dispatch(categoriesAction.categoriesFetch());
+    dispatch(categoryAction.retrieveCategoryListExecute());
   }, [dispatch]);
 
   const handleFetchProducts = useCallback(
@@ -49,7 +49,7 @@ const ProductList = () => {
         <div>
           <div className="rounded shadow p-8 py-4 bg-white mr-8 inline-block h-auto">
             <div className="font-extrabold text-2xl mb-6">Categories</div>
-            {categories.map((data, i) => {
+            {categoryList.map((data, i) => {
               return (
                 <div key={i} className="my-4 font-light">
                   {data.name}
