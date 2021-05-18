@@ -47,7 +47,7 @@ const Login = () => {
   //#region WATCHER
   useEffect(() => {
     if (authActionState === authAction.loginSuccess.type) {
-      history.replace("/home");
+      history.replace("/product");
     }
     if (authActionState === authAction.loginFailed.type) {
       handleLoginReset();

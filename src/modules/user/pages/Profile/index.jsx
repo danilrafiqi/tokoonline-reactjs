@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import { Button, Spinner } from "@components/atoms/index";
 import { SideBar } from "@components/organisms/index";
 import Dashboard from "@components/templates/Dashboard/index";
@@ -6,10 +7,11 @@ import {
   useRetrieveProfileData,
   useUpdatePasswordLoading,
   useUpdateProfileLoading,
+  useUpdateProfilePictureLoading,
   useUserAction,
 } from "commons/redux/users/selector";
 import { userAction } from "commons/redux/users/slice";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -31,7 +33,9 @@ const Profile = () => {
   const userActionState = useUserAction();
   const profileData = useRetrieveProfileData();
   const updateProfileLoading = useUpdateProfileLoading();
+  const updateProfilePictureLoading = useUpdateProfilePictureLoading();
   const updatePasswordLoading = useUpdatePasswordLoading();
+  const [foto, setFoto] = useState();
 
   const {
     register: updatePofileRegister,
@@ -62,6 +66,12 @@ const Profile = () => {
     [dispatch]
   );
 
+  const handleUpdateProfilePicture = useCallback(
+    (id, profilePicture) =>
+      dispatch(userAction.updateProfilePictureExecute({ id, profilePicture })),
+    [dispatch]
+  );
+
   const handleUpdatePassword = useCallback(
     (payload) => dispatch(userAction.updatePasswordExecute(payload)),
     [dispatch]
@@ -72,7 +82,18 @@ const Profile = () => {
     if (userActionState === userAction.updateProfileSuccess.type) {
       alert("sukses");
     }
+    if (userActionState === userAction.updateProfilePictureSuccess.type) {
+      window.location.reload();
+    }
   }, [userActionState, history]);
+
+  useEffect(() => {
+    if (foto && profileData) {
+      handleUpdateProfilePicture(profileData.id, foto);
+      setFoto(undefined);
+    }
+  }, [foto, profileData, handleUpdateProfilePicture]);
+
   //#endregion
 
   return (
@@ -85,10 +106,39 @@ const Profile = () => {
           <div className="flex-1">
             <div className="flex flex-row rounded-md shadow bg-white p-4">
               <div className="w-64">
-                <img src="" alt="" className="w-64 h-64" />
-                <Button className="mt-4 w-full" type="button">
-                  {true ? <Spinner className="mr-4" /> : "Simpan Alamat"}
-                </Button>
+                <img
+                  src={baseApi + "/" + profileData.profilePicture}
+                  alt=""
+                  className="w-64 h-64 rounded object-cover mb-2"
+                />
+
+                <div class="flex w-full items-center justify-center bg-grey-lighter">
+                  <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer">
+                    {updateProfilePictureLoading ? (
+                      <Spinner className="" />
+                    ) : (
+                      <>
+                        <svg
+                          class="w-8 h-8"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                        </svg>
+                        <span class="mt-2 text-base leading-normal">
+                          Select a file
+                        </span>
+                      </>
+                    )}
+
+                    <input
+                      type="file"
+                      class="hidden"
+                      onChange={(e) => setFoto(e.target.files[0])}
+                    />
+                  </label>
+                </div>
               </div>
               <form
                 className="flex flex-col w-full ml-8"

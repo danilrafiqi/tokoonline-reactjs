@@ -1,90 +1,92 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const productsInitialState = {
-  productsRespons: undefined,
-  productsError: undefined,
-  productsLoading: false,
+const retrieveProductListInitialState = {
+  retrieveProductListRespons: undefined,
+  retrieveProductListError: undefined,
+  retrieveProductListLoading: false,
 };
 
-const productDetailInitialState = {
-  productDetailRespons: undefined,
-  productDetailError: undefined,
-  productDetailLoading: false,
-  productDetail: {},
+const retrieveProductDetailInitialState = {
+  retrieveProductDetailRespons: undefined,
+  retrieveProductDetailError: undefined,
+  retrieveProductDetailLoading: false,
+  retrieveProductDetail: {},
 };
 
 const initialState = {
-  ...productsInitialState,
+  ...retrieveProductListInitialState,
   action: "",
-  products: [],
-  productsPagination: {},
+  retrieveProductListData: [],
+  retrieveProductListPagination: {},
+  retrieveProductDetailData: {},
 };
 
-const productsSlice = createSlice({
-  name: "products",
+const productSlice = createSlice({
+  name: "product",
   initialState,
   reducers: {
-    //#region products
-    productsFetch: (state, action) => ({
+    //#region retrieveProductList
+    retrieveProductListDataUpdate: (state, action) => ({
       ...state,
-      productsLoading: true,
+      retrieveProductListData: action.payload,
       action: action.type,
     }),
-    productsSuccess: (state, action) => ({
+    retrieveProductListPaginationUpdate: (state, action) => ({
       ...state,
-      productsLoading: false,
-      productsRespons: action.payload,
+      retrieveProductListPagination: action.payload,
       action: action.type,
     }),
-    productsUpdate: (state, action) => ({
+
+    retrieveProductListExecute: (state, action) => ({
       ...state,
-      productsLoading: false,
-      products: action.payload.data,
-      productsPagination: action.payload.pagination,
+      retrieveProductListLoading: true,
       action: action.type,
     }),
-    productsFailed: (state, action) => ({
+    retrieveProductListSuccess: (state, action) => ({
       ...state,
-      productsLoading: true,
-      productsError: action.payload,
+      retrieveProductListLoading: false,
+      retrieveProductListRespons: action.payload,
       action: action.type,
     }),
-    productsReset: (state, action) => ({
+    retrieveProductListFailed: (state, action) => ({
       ...state,
-      ...productsInitialState,
+      retrieveProductListLoading: true,
+      retrieveProductListError: action.payload,
+      action: action.type,
+    }),
+    retrieveProductListReset: (state, action) => ({
+      ...state,
+      ...retrieveProductListInitialState,
       action: action.type,
     }),
     //#endregion
 
-    //#region productsDetail
-    productDetailFetch: (state, action) => ({
+    //#region retrieveProductListDetail
+    retrieveProductDetailExecute: (state, action) => ({
       ...state,
-      productDetailLoading: true,
+      retrieveProductDetailLoading: true,
       action: action.type,
     }),
-    productDetailSuccess: (state, action) => ({
+    retrieveProductDetailSuccess: (state, action) => ({
       ...state,
-      productDetailLoading: false,
-      productDetailRespons: action.payload,
-      productDetail: action.payload,
+      retrieveProductDetailLoading: false,
+      retrieveProductDetailRespons: action.payload,
+      retrieveProductDetailData: action.payload,
       action: action.type,
     }),
-    productDetailFailed: (state, action) => ({
+    retrieveProductDetailFailed: (state, action) => ({
       ...state,
-      productDetailLoading: true,
-      productDetailError: action.payload,
+      retrieveProductDetailLoading: true,
+      retrieveProductDetailError: action.payload,
       action: action.type,
     }),
-    productDetailReset: (state, action) => ({
+    retrieveProductDetailReset: (state, action) => ({
       ...state,
-      ...productDetailInitialState,
+      ...retrieveProductDetailInitialState,
       action: action.type,
     }),
     //#endregion
   },
 });
 
-export const {
-  actions: productsAction,
-  reducer: productsReducer,
-} = productsSlice;
+export const { actions: productAction, reducer: productReducer } = productSlice;

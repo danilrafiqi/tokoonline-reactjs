@@ -26,7 +26,6 @@ const CouponList = () => {
           <SideBar />
         </div>
         <div className="grid grid-cols-3 gap-2 flex-1">
-          {console.log("couponListData", couponListData)}
           {couponListData.map((data) => {
             return (
               <CouponCard

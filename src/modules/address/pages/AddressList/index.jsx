@@ -65,7 +65,7 @@ const ProductList = () => {
                     {data.name}
                   </div>
                   <div className="text-gray-500 text-sm -mt-1">
-                    Rp.{currencyFormat(data.price)}
+                    {currencyFormat(data.price)}
                   </div>
                 </div>
               );

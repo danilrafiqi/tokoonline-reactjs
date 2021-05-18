@@ -25,6 +25,31 @@ function* updateProfileWorker(action) {
   }
 }
 
+function* updateProfilePictureWorker(action) {
+  try {
+    console.log("action.payload", action.payload);
+    const data = new FormData();
+    data.append(
+      "foto",
+      action.payload.profilePicture,
+      action.payload.profilePicture.name
+    );
+    data.append(
+      "profilePicture",
+      action.payload.id + "." + action.payload.profilePicture.type.split("/")[1]
+    );
+
+    const res = yield call(
+      axios.put,
+      `${baseApi}/profile/customers-photo`,
+      data
+    );
+    yield put(userAction.updateProfilePictureSuccess(res.data));
+  } catch (error) {
+    yield put(userAction.updateProfilePictureFailed(error.response.data));
+  }
+}
+
 function* updatePasswordWorker(action) {
   try {
     const res = yield call(axios.put, `${baseApi}/update-password`, {
@@ -41,5 +66,9 @@ function* updatePasswordWorker(action) {
 export const userWatcher = [
   takeLatest(userAction.retrieveProfileExecute.type, retrieveProfileWorker),
   takeLatest(userAction.updateProfileExecute.type, updateProfileWorker),
+  takeLatest(
+    userAction.updateProfilePictureExecute.type,
+    updateProfilePictureWorker
+  ),
   takeLatest(userAction.updatePasswordExecute.type, updatePasswordWorker),
 ];

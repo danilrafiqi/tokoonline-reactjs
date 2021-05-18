@@ -3,8 +3,8 @@ import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { useAddCartLoading, useCartAction } from "commons/redux/cart/selector";
 import { cartAction } from "commons/redux/cart/slice";
-import { useProductDetail } from "commons/redux/products/selector";
-import { productsAction } from "commons/redux/products/slice";
+import { useRetrieveProductDetailData } from "commons/redux/products";
+import { productAction } from "commons/redux/products/slice";
 import { currencyFormat } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,13 +16,13 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState("");
   const dispatch = useDispatch();
   const { id } = useParams();
-  const productDetail = useProductDetail();
+  const productDetail = useRetrieveProductDetailData();
   const addCartLoading = useAddCartLoading();
   const cartActionState = useCartAction();
 
   const handleFetchProductDetail = useCallback(
     (param) => {
-      dispatch(productsAction.productDetailFetch(param));
+      dispatch(productAction.retrieveProductDetailExecute(param));
     },
     [dispatch]
   );
@@ -41,7 +41,7 @@ const ProductDetail = () => {
   }, [handleFetchProductDetail, id]);
 
   useEffect(() => {
-    dispatch(productsAction.productDetailReset());
+    dispatch(productAction.retrieveProductDetailReset());
   }, [dispatch]);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const ProductDetail = () => {
                 {productDetail.name}
               </div>
               <div className="font-bold text-xl text-gray-700 my-4">
-                Rp.{currencyFormat(productDetail.price)}
+                {currencyFormat(productDetail.price)}
               </div>
 
               <div className="font-bold text-xl text-gray-700">

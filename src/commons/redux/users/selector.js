@@ -17,3 +17,6 @@ export const useUpdateProfileLoading = () => {
 export const useUpdatePasswordLoading = () => {
   return useSelector((state) => state.user.updatePasswordLoading);
 };
+export const useUpdateProfilePictureLoading = () => {
+  return useSelector((state) => state.user.updateProfilePictureLoading);
+};

@@ -123,7 +123,7 @@ const CartList = () => {
                         {data.product.name}
                       </div>
                       <div className="font-bold text-xl text-gray-700 mb-4">
-                        Rp.{currencyFormat(data.product.price)}
+                        {currencyFormat(data.product.price)}
                       </div>
 
                       <CartButton
@@ -152,12 +152,12 @@ const CartList = () => {
                 <div className="font-semibold mb-4">Ringkasan belanja</div>
                 <div className="text-gray-500 flex flex-row text-sm justify-between">
                   <div>Total Harga ({totalBarang} barang)</div>
-                  <div>Rp.{totalPrice},-</div>
+                  <div>{totalPrice}</div>
                 </div>
                 <hr className="my-4" />
                 <div className="font-semibold flex flex-row justify-between">
                   <div>Total</div>
-                  <div>Rp.{totalPrice},-</div>
+                  <div>{totalPrice}</div>
                 </div>
 
                 <Button

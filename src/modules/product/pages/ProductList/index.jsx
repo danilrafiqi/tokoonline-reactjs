@@ -1,10 +1,12 @@
+import { useRetrieveProductListPagination } from "@commons/redux/products/selector";
 import { Pagination } from "@components/moleculs/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { useCategories } from "commons/redux/categories/selector";
 import { categoriesAction } from "commons/redux/categories/slice";
-import { useProducts } from "commons/redux/products/selector";
-import { productsAction } from "commons/redux/products/slice";
+import { useRetrieveProductListData } from "commons/redux/products";
+import { productAction } from "commons/redux/products/slice";
 import { currencyFormat } from "commons/utils/index";
+import ProductCard from "modules/product/components/ProductCard/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -14,19 +16,31 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const [pagination, setPagination] = useState(1);
   const categories = useCategories();
-  const products = useProducts();
+  const productList = useRetrieveProductListData();
+  const productPagination = useRetrieveProductListPagination();
 
   const handleFetchCategories = useCallback(() => {
     dispatch(categoriesAction.categoriesFetch());
   }, [dispatch]);
 
-  const handleFetchProducts = useCallback(() => {
-    dispatch(productsAction.productsFetch());
-  }, [dispatch]);
+  const handleFetchProducts = useCallback(
+    (payload) => {
+      dispatch(
+        productAction.retrieveProductListExecute({
+          perPage: payload?.perPage,
+          currentPage: payload?.currentPage,
+        })
+      );
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     handleFetchCategories();
-    handleFetchProducts();
+    handleFetchProducts({
+      perPage: 8,
+      currentPage: 1,
+    });
   }, []);
 
   return (
@@ -48,32 +62,36 @@ const ProductList = () => {
         <div className="overflow-scroll flex-1">
           {/* //#region PRODUCTS */}
           <div className="grid grid-cols-4 gap-4">
-            {products.map((data, i) => {
+            {productList.map((data, i) => {
               return (
-                <div
+                <ProductCard
+                  key={i}
                   onClick={() => {
                     history.push(`/product/${data.id}`);
                   }}
-                  key={i}
-                  className="rounded-2xl w-full mb-8"
-                >
-                  <img
-                    className="rounded-2xl w-full h-44 object-cover"
-                    src={data.image}
-                  ></img>
-                  <div className="mt-2 text-gray-700 font-semibold">
-                    {data.name}
-                  </div>
-                  <div className="text-gray-500 text-sm -mt-1">
-                    Rp.{currencyFormat(data.price)}
-                  </div>
-                </div>
+                  image={data.image}
+                  name={data.name}
+                  price={currencyFormat(data.price)}
+                />
               );
             })}
           </div>
           {/* //#endregion */}
+
           {/* //#region PAGINATION */}
-          <Pagination active={pagination} onClick={setPagination} limit={10} />
+          <Pagination
+            active={pagination}
+            onClick={(v) => {
+              setPagination(v);
+              handleFetchProducts({
+                perPage: 8,
+                currentPage: v,
+              });
+            }}
+            limit={Math.ceil(
+              productPagination.total / productPagination.perPage
+            )}
+          />
           {/* //#endregion */}
         </div>
       </div>

@@ -12,6 +12,12 @@ const updateProfileInitialState = {
   updateProfileLoading: false,
 };
 
+const updateProfilePictureInitialState = {
+  updateProfilePictureRespons: undefined,
+  updateProfilePictureError: undefined,
+  updateProfilePictureLoading: false,
+};
+
 const updatePasswordInitialState = {
   updatePasswordRespons: undefined,
   updatePasswordError: undefined,
@@ -77,6 +83,31 @@ const userSlice = createSlice({
     updateProfileReset: (state, action) => ({
       ...state,
       ...updateProfileInitialState,
+      action: action.type,
+    }),
+    //#endregion
+
+    //#region updateProfilePicture
+    updateProfilePictureExecute: (state, action) => ({
+      ...state,
+      updateProfilePictureLoading: true,
+      action: action.type,
+    }),
+    updateProfilePictureSuccess: (state, action) => ({
+      ...state,
+      updateProfilePictureLoading: false,
+      updateProfilePictureRespons: action.payload,
+      action: action.type,
+    }),
+    updateProfilePictureFailed: (state, action) => ({
+      ...state,
+      updateProfilePictureLoading: false,
+      updateProfilePictureError: action.payload,
+      action: action.type,
+    }),
+    updateProfilePictureReset: (state, action) => ({
+      ...state,
+      ...updateProfilePictureInitialState,
       action: action.type,
     }),
     //#endregion

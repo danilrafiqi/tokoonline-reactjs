@@ -1,84 +1,104 @@
-import { Pagination } from "@components/moleculs/index";
+import { orderAction, useRetrieveOrderListData } from "@commons/redux/order";
+import { Button } from "@components/atoms/index";
+import { SideBar } from "@components/organisms/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useCategories } from "commons/redux/categories/selector";
-import { categoriesAction } from "commons/redux/categories/slice";
-import { useProducts } from "commons/redux/products/selector";
-import { productsAction } from "commons/redux/products/slice";
 import { currencyFormat } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import "./index.css";
 
-const ProductList = () => {
-  const history = useHistory();
+const statusObject = {
+  all: "All",
+  waiting: "Waiting Payment",
+  ordered: "Ordered",
+  packed: "Packed",
+  sent: "Sent",
+  completed: "Completed",
+  canceled: "Canceled",
+};
+const OrderList = () => {
   const dispatch = useDispatch();
-  const [pagination, setPagination] = useState(1);
-  const categories = useCategories();
-  const products = useProducts();
+  const [status, setStatus] = useState("all");
+  const orderListData = useRetrieveOrderListData();
 
-  const handleFetchCategories = useCallback(() => {
-    dispatch(categoriesAction.categoriesFetch());
-  }, [dispatch]);
-
-  const handleFetchProducts = useCallback(() => {
-    dispatch(productsAction.productsFetch());
-  }, [dispatch]);
+  const handleRetrieveOrder = useCallback(
+    (params) => {
+      dispatch(orderAction.retrieveOrderListExecute({ status: params }));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    handleFetchCategories();
-    handleFetchProducts();
-  }, []);
+    handleRetrieveOrder(status);
+  }, [handleRetrieveOrder, status]);
 
   return (
     <Dashboard>
-      <div className="flex flex-row justify-between mt-4">
+      <div className="flex flex-row py-4">
         <div>
-          <div className="rounded shadow p-8 py-4 bg-white mr-8 inline-block h-auto">
-            <div className="font-extrabold text-2xl mb-6">Categories</div>
-            {categories.map((data, i) => {
-              return (
-                <div key={i} className="my-4 font-light">
-                  {data.name}
-                </div>
-              );
-            })}
-          </div>
+          <SideBar />
         </div>
-
-        <div className="overflow-scroll flex-1">
-          {/* //#region PRODUCTS */}
-          <div className="grid grid-cols-4 gap-4">
-            {products.map((data, i) => {
+        <div className="flex-1">
+          <div className="flex">
+            {Object.keys(statusObject).map((val) => {
               return (
-                <div
-                  onClick={() => {
-                    history.push(`/product/${data.id}`);
-                  }}
-                  key={i}
-                  className="rounded-2xl w-full mb-8"
+                <Button
+                  className={`mx-1 ${
+                    status === val ? "mx-1" : "order__btn-status"
+                  }`}
+                  type="button"
+                  onClick={() => setStatus(val)}
                 >
-                  <img
-                    className="rounded-2xl w-full h-44 object-cover"
-                    src={data.image}
-                  ></img>
-                  <div className="mt-2 text-gray-700 font-semibold">
-                    {data.name}
-                  </div>
-                  <div className="text-gray-500 text-sm -mt-1">
-                    Rp.{currencyFormat(data.price)}
-                  </div>
-                </div>
+                  {statusObject[val]}
+                </Button>
               );
             })}
           </div>
-          {/* //#endregion */}
-          {/* //#region PAGINATION */}
-          <Pagination active={pagination} onClick={setPagination} limit={10} />
-          {/* //#endregion */}
+          {orderListData.map((data, i) => {
+            return (
+              <div
+                className="flex flex-row shadow items-center rounded-2xl p-2 my-4 first:mt-0 last:mb-0"
+                key={i}
+              >
+                <div className="flex flex-1">
+                  <div className="w-32 h-32">
+                    <img
+                      className="rounded-2xl "
+                      src={data.product.image}
+                    ></img>
+                  </div>
+
+                  <div className="ml-8 flex-1 flex flex-col">
+                    <div>
+                      <span className="bg-green-200 rounded-full px-3 py-1 text-gray-600">
+                        {data.status}
+                      </span>
+                    </div>
+                    <div className="text-xl text-gray-500 line-clamp-2">
+                      {data.product.name}
+                    </div>
+                    <div className="font-bold text-xl text-gray-700">
+                      {currencyFormat(data.product.price)}
+                    </div>
+                    <div className="font-light text-gray-700">
+                      x {data.quantity}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mr-4">
+                  <div>Total</div>
+                  <div>
+                    {currencyFormat(data.product.price * data.quantity)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Dashboard>
   );
 };
 
-export default ProductList;
+export default OrderList;

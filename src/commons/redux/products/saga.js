@@ -1,35 +1,45 @@
 import axios from "axios";
+import qs from "qs";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { baseApi } from "../../config";
-import { productsAction } from "./slice";
+import { productAction } from "./slice";
 
 // WORKER
-function* productsFetchWorker() {
+function* productsListWorker(action) {
   try {
-    const res = yield call(axios.get, `${baseApi}/products`);
-    yield put(productsAction.productsSuccess(res.data));
-    yield put(productsAction.productsUpdate(res.data));
+    const query = qs.stringify(action.payload);
+    const res = yield call(axios.get, `${baseApi}/products?${query}`);
+
+    yield put(productAction.retrieveProductListSuccess(res.data));
+    yield put(productAction.retrieveProductListDataUpdate(res.data.data));
+    if (res.data?.pagination?.total) {
+      yield put(
+        productAction.retrieveProductListPaginationUpdate(res.data.pagination)
+      );
+    }
   } catch (error) {
-    yield put(productsAction.productsFailed(error.response.data));
+    yield put(productAction.retrieveProductListFailed(error.response.data));
   }
 }
 
-function* productDetailFetchWorker(action) {
+function* productDetailWorker(action) {
   try {
-    console.log("Adsfgds", action);
     const res = yield call(
       axios.get,
       `${baseApi}/products/${action.payload.id}`
     );
-    yield put(productsAction.productDetailSuccess(res.data));
+    yield put(productAction.retrieveProductDetailSuccess(res.data));
   } catch (error) {
     console.log("error", error);
-    yield put(productsAction.productDetailFailed(error.response.data));
+    yield put(productAction.retrieveProductDetailFailed(error.response.data));
   }
 }
 
 // WATCHER
 export const productsWatcher = [
-  takeLatest(productsAction.productsFetch.type, productsFetchWorker),
-  takeLatest(productsAction.productDetailFetch.type, productDetailFetchWorker),
+  takeLatest(productAction.retrieveProductListExecute.type, productsListWorker),
+  takeLatest(
+    productAction.retrieveProductDetailExecute.type,
+    productDetailWorker
+  ),
 ];

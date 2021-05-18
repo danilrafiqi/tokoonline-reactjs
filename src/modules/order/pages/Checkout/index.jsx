@@ -145,7 +145,7 @@ const Checkout = () => {
                         {data.product.name}
                       </div>
                       <div className="font-bold text-xl text-gray-700">
-                        Rp.{currencyFormat(data.product.price)},-
+                        {currencyFormat(data.product.price)}
                       </div>
                       <div className="font-light text-gray-700 mb-4">
                         x {data.quantity}
@@ -174,19 +174,17 @@ const Checkout = () => {
                 <div className="text-gray-500 flex flex-row text-sm justify-between">
                   <div>Total Harga ({totalBarang} barang)</div>
                   <div>
-                    Rp.{" "}
                     {currencyFormat(
                       sumBy(cartList, (data) => {
                         return data.product.price * data.quantity;
                       })
                     )}
-                    ,-
                   </div>
                 </div>
                 <hr className="my-4" />
                 <div className="font-semibold flex flex-row justify-between">
                   <div>Total</div>
-                  <div>Rp.{totalPrice},-</div>
+                  <div>{totalPrice}</div>
                 </div>
 
                 <Button className="w-full mt-4" onClick={openModal}>

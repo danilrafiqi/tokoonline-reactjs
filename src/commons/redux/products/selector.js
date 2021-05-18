@@ -1,17 +1,25 @@
 import { useSelector } from "react-redux";
 
-export const useProductsctionSelector = () =>
-  useSelector((state) => state.products.action);
-export const useProductsLoading = () => {
-  return useSelector((state) => state.products.productsLoading);
-};
-export const useProducts = () => {
-  return useSelector((state) => state.products.products);
-};
+export const useProductAction = () =>
+  useSelector((state) => state.product.action);
 
-export const useProductDetailLoading = () => {
-  return useSelector((state) => state.products.productDetailLoading);
+//#region retrieveProductList
+export const useRetrieveProductListLoading = () => {
+  return useSelector((state) => state.product.retrieveProductListLoading);
 };
-export const useProductDetail = () => {
-  return useSelector((state) => state.products.productDetail);
+export const useRetrieveProductListData = () => {
+  return useSelector((state) => state.product.retrieveProductListData);
 };
+export const useRetrieveProductListPagination = () => {
+  return useSelector((state) => state.product.retrieveProductListPagination);
+};
+//#endregion
+
+//#region retrieveProductDetail
+export const useRetrieveProductDetailLoading = () => {
+  return useSelector((state) => state.product.retrieveProductDetailLoading);
+};
+export const useRetrieveProductDetailData = () => {
+  return useSelector((state) => state.product.retrieveProductDetailData);
+};
+//#endregion
