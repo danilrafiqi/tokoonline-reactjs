@@ -4,7 +4,7 @@ import { baseApi } from "../../config";
 import { addressAction } from "./slice";
 
 // WORKER
-function* retrieveAddressFetchWorker() {
+function* retrieveAddressListWorker() {
   try {
     const res = yield call(axios.get, `${baseApi}/address`);
     yield put(addressAction.retrieveAddressSuccess(res.data));
@@ -13,7 +13,7 @@ function* retrieveAddressFetchWorker() {
   }
 }
 
-function* createAddressFetchWorker(action) {
+function* createAddressWorker(action) {
   try {
     const res = yield call(axios.post, `${baseApi}/address`, {
       address: action.payload.address,
@@ -30,8 +30,8 @@ function* createAddressFetchWorker(action) {
 // WATCHER
 export const addressWatcher = [
   takeLatest(
-    addressAction.retrieveAddressFetch.type,
-    retrieveAddressFetchWorker
+    addressAction.retrieveAddressListExecute.type,
+    retrieveAddressListWorker
   ),
-  takeLatest(addressAction.createAddressFetch.type, createAddressFetchWorker),
+  takeLatest(addressAction.createAddressExecute.type, createAddressWorker),
 ];

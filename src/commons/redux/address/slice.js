@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const retrieveAddressInitialState = {
-  retrieveAddressRespons: undefined,
-  retrieveAddressError: undefined,
-  retrieveAddressLoading: false,
+const retrieveAddressListInitialState = {
+  retrieveAddressListRespons: undefined,
+  retrieveAddressListError: undefined,
+  retrieveAddressListLoading: false,
 };
 
 const createAddressInitialState = {
@@ -13,45 +13,55 @@ const createAddressInitialState = {
 };
 
 const initialState = {
-  ...retrieveAddressInitialState,
+  ...retrieveAddressListInitialState,
   ...createAddressInitialState,
   action: "",
-  addressList: [],
-  addressPagination: {},
+  retrieveAddressListData: [],
+  retrieveAddressListPagination: {},
 };
 
 const addressSlice = createSlice({
   name: "address",
   initialState,
   reducers: {
-    //#region retrieveAddress
-    retrieveAddressFetch: (state, action) => ({
+    //#region retrieveAddressList
+    retrieveAddressListDataUpdate: (state, action) => ({
       ...state,
-      retrieveAddressLoading: true,
+      retrieveAddressListData: action.payload,
       action: action.type,
     }),
-    retrieveAddressSuccess: (state, action) => ({
+    retrieveAddressListPaginationUpdate: (state, action) => ({
       ...state,
-      retrieveAddressLoading: false,
-      addressList: action.payload.data,
-      addressPagination: action.payload.pagination,
+      retrieveAddressListPagination: action.payload,
       action: action.type,
     }),
-    retrieveAddressFailed: (state, action) => ({
+
+    retrieveAddressListExecute: (state, action) => ({
       ...state,
-      retrieveAddressLoading: true,
-      retrieveAddressError: action.payload,
+      retrieveAddressListLoading: true,
       action: action.type,
     }),
-    retrieveAddressReset: (state, action) => ({
+    retrieveAddressListSuccess: (state, action) => ({
       ...state,
-      ...retrieveAddressInitialState,
+      retrieveAddressListLoading: false,
+      retrieveAddressListRespons: action.payload,
+      action: action.type,
+    }),
+    retrieveAddressListFailed: (state, action) => ({
+      ...state,
+      retrieveAddressListLoading: true,
+      retrieveAddressListError: action.payload,
+      action: action.type,
+    }),
+    retrieveAddressListReset: (state, action) => ({
+      ...state,
+      ...retrieveAddressListInitialState,
       action: action.type,
     }),
     //#endregion
 
     //#region createAddress
-    createAddressFetch: (state, action) => ({
+    createAddressExecute: (state, action) => ({
       ...state,
       createAddressLoading: true,
       action: action.type,

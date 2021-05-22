@@ -1,8 +1,8 @@
 import {
   addressAction,
   useAddressAction,
-  useAddressList,
   useCreateAddressLoading,
+  useRetrieveAddressListData,
 } from "@commons/redux/address";
 import {
   cartAction,
@@ -48,7 +48,7 @@ const Checkout = () => {
   };
 
   const cartList = useRetrieveCartListSelectedData();
-  const addressList = useAddressList();
+  const addressList = useRetrieveAddressListData();
   const loading = useCreateAddressLoading();
   const addressActionState = useAddressAction();
 
