@@ -30,7 +30,7 @@ const authSlice = createSlice({
     }),
 
     //#region LOGIN
-    loginFetch: (state, action) => ({
+    loginExecute: (state, action) => ({
       ...state,
       loginLoading: true,
       action: action.type,
@@ -53,7 +53,7 @@ const authSlice = createSlice({
     //#endregion
 
     //#region REGISTER
-    registerFetch: (state, action) => ({
+    registerExecute: (state, action) => ({
       ...state,
       registerLoading: true,
       action: action.type,

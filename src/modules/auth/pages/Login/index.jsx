@@ -1,7 +1,4 @@
-import {
-  useAuthActionSelector,
-  useLoginLoading,
-} from "@commons/redux/auth/selector";
+import { useAuthAction, useLoginLoading } from "@commons/redux/auth/selector";
 import { authAction } from "@commons/redux/auth/slice";
 import { Spinner } from "@components/atoms/index";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,7 +25,7 @@ const Login = () => {
   const history = useHistory();
 
   //#region STATE
-  const authActionState = useAuthActionSelector();
+  const authActionState = useAuthAction();
   const loading = useLoginLoading();
   //#endregion
 

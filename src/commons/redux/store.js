@@ -4,7 +4,7 @@ import persistStore from "redux-persist/es/persistStore";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import { tokenInterceptor } from "./middleware";
-import reducer from "./reducer";
+import { rootReducer } from "./reducer";
 import { rootSaga } from "./saga";
 
 const persistConfig = {
@@ -13,7 +13,7 @@ const persistConfig = {
   whitelist: ["auth"],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const sagaMiddleware = createSagaMiddleware();
 

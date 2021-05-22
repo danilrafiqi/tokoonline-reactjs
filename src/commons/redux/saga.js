@@ -8,7 +8,7 @@ import { orderWatcher } from "./order/saga";
 import { productsWatcher } from "./product/saga";
 import { userWatcher } from "./user/saga";
 
-const allWathcer = [
+const rootWathcer = [
   ...authWatcher,
   ...categoryWatcher,
   ...productsWatcher,
@@ -21,7 +21,7 @@ const allWathcer = [
 
 // WATCHER
 function* rootSaga() {
-  yield all(allWathcer);
+  yield all(rootWathcer);
 }
 
 export { rootSaga };

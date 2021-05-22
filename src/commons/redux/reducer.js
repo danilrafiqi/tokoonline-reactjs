@@ -8,7 +8,7 @@ import { orderReducer } from "./order/slice";
 import { productReducer } from "./product/slice";
 import { userReducer } from "./user/slice";
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
   auth: authReducer,
   product: productReducer,
   category: categoryReducer,
@@ -19,4 +19,4 @@ const reducer = combineReducers({
   order: orderReducer,
 });
 
-export default reducer;
+export { rootReducer };

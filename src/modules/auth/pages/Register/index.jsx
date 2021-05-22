@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import {
-  useAuthActionSelector,
+  useAuthAction,
   useRegisterLoading,
 } from "../../../../commons/redux/auth/selector";
 import { authAction } from "../../../../commons/redux/auth/slice";
@@ -30,7 +30,7 @@ const Register = () => {
   const history = useHistory();
 
   //#region STATE
-  const authActionState = useAuthActionSelector();
+  const authActionState = useAuthAction();
   const loading = useRegisterLoading();
   //#endregion
 

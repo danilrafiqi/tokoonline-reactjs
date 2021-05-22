@@ -4,7 +4,7 @@ import { baseApi } from "../../config";
 import { authAction } from "./slice";
 
 // WORKER
-function* loginFetchWorker(action) {
+function* loginWorker(action) {
   try {
     const res = yield call(axios.post, `${baseApi}/login`, {
       email: action.payload.email,
@@ -18,7 +18,7 @@ function* loginFetchWorker(action) {
   }
 }
 
-function* registerFetchWorker(action) {
+function* registerWorker(action) {
   try {
     const res = yield call(axios.post, baseApi + "/register", {
       email: action.payload.email,
@@ -33,6 +33,6 @@ function* registerFetchWorker(action) {
 
 // WATCHER
 export const authWatcher = [
-  takeLatest(authAction.loginFetch.type, loginFetchWorker),
-  takeLatest(authAction.registerFetch.type, registerFetchWorker),
+  takeLatest(authAction.loginExecute.type, loginWorker),
+  takeLatest(authAction.registerExecute.type, registerWorker),
 ];
