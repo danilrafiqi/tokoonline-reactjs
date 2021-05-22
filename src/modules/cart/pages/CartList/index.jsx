@@ -163,7 +163,7 @@ const CartList = () => {
                 <Button
                   onClick={async () => {
                     dispatch(
-                      cartAction.cartsSelectedUpdate(
+                      cartAction.retrieveCartListSelectedDataUpdate(
                         cartList.filter((data) => {
                           return findCheckedValue(checkedItem, data.id);
                         })

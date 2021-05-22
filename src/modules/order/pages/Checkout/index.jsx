@@ -57,11 +57,11 @@ const Checkout = () => {
   }, [dispatch]);
 
   const handleFetchAddress = useCallback(() => {
-    dispatch(addressAction.retrieveAddressFetch());
+    dispatch(addressAction.retrieveAddressListExecute());
   }, [dispatch]);
 
   const handleCreateAddress = useCallback(
-    (payload) => dispatch(addressAction.createAddressFetch(payload)),
+    (payload) => dispatch(addressAction.createAddressExecute(payload)),
     [dispatch]
   );
 
