@@ -68,6 +68,7 @@ const ProductDetail = () => {
           <div className="mt-8 flex flex-row">
             <div className="w-96">
               <img
+                alt="dummy"
                 className="rounded-2xl w-96 h-72 object-cover"
                 src={productDetail.image}
               ></img>
@@ -76,6 +77,7 @@ const ProductDetail = () => {
                 {Array.from(Array(3).keys()).map((i) => {
                   return (
                     <img
+                      alt="dummy"
                       key={i}
                       className="rounded-2xl w-28"
                       src="https://placeimg.com/200/200/any"

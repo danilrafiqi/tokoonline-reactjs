@@ -63,6 +63,7 @@ const OrderList = () => {
                 <div className="flex flex-1">
                   <div className="w-32 h-32">
                     <img
+                      alt="dummy"
                       className="rounded-2xl "
                       src={data.product.image}
                     ></img>

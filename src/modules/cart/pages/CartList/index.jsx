@@ -1,12 +1,12 @@
 import { cartAction, useRetrieveCartListData } from "@commons/redux/cart";
-import { BackButton, Button } from "@components/atoms/index";
-import CartButton from "@components/moleculs/CartButton/index";
-import Dashboard from "@components/templates/Dashboard/index";
 import {
   currencyFormat,
   deleteChecked,
   findCheckedValue,
-} from "commons/utils/index";
+} from "@commons/utils";
+import { BackButton, Button } from "@components/atoms/index";
+import CartButton from "@components/moleculs/CartButton/index";
+import Dashboard from "@components/templates/Dashboard/index";
 import sumBy from "lodash/sumBy";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -34,7 +34,7 @@ const CartList = () => {
 
   useEffect(() => {
     handleFetchCarts();
-  }, []);
+  }, [handleFetchCarts]);
 
   const finalData = cartList.filter((val) => {
     return findCheckedValue(checkedItem, val.id);
@@ -112,6 +112,7 @@ const CartList = () => {
                       className="w-32 h-32 mb-4"
                     >
                       <img
+                        alt="dummy"
                         className="rounded-2xl "
                         src={data.product.image}
                       ></img>

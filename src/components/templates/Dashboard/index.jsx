@@ -18,7 +18,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     handleFetchCarts();
-  }, []);
+  }, [handleFetchCarts]);
 
   return (
     <div className="bg-white container mx-auto 2xl:max-w-7xl">

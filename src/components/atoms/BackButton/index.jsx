@@ -10,13 +10,13 @@ const BackButton = ({
 }) => {
   const history = useHistory();
 
-  const hanleBack = useCallback(
+  const handleBack = useCallback(
     () => (onBack ? onBack() : history.goBack()),
-    []
+    [history, onBack]
   );
 
   return (
-    <button onClick={hanleBack} className={`flex flex-row ${className}`}>
+    <button onClick={handleBack} className={`flex flex-row ${className}`}>
       <div className="bg-gray-2 p-2 rounded-full hover:bg-gray-3 text-gray-600 flex items-center justify-center">
         {icon}
       </div>

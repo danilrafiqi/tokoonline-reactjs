@@ -68,7 +68,7 @@ const Checkout = () => {
   useEffect(() => {
     handleFetchCarts();
     handleFetchAddress();
-  }, []);
+  }, [handleFetchCarts, handleFetchAddress]);
 
   //#region WATCHER
   useEffect(() => {
@@ -76,7 +76,7 @@ const Checkout = () => {
       handleFetchAddress();
       closeAddressModal();
     }
-  }, [addressActionState]);
+  }, [addressActionState, handleFetchAddress]);
   //#endregion
 
   const totalBarang = sumBy(cartList, (data) => {
@@ -137,6 +137,7 @@ const Checkout = () => {
                       className="w-32 h-32 mb-4"
                     >
                       <img
+                        alt="dummy"
                         className="rounded-2xl "
                         src={data.product.image}
                       ></img>

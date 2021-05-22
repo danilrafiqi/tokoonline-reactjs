@@ -43,7 +43,7 @@ const ProductList = () => {
       perPage: 8,
       currentPage: 1,
     });
-  }, []);
+  }, [handleFetchCategories, handleFetchProducts]);
 
   return (
     <Dashboard>
