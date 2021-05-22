@@ -1,13 +1,22 @@
 import axios from "axios";
+import qs from "qs";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { baseApi } from "../../config";
 import { addressAction } from "./slice";
 
 // WORKER
-function* retrieveAddressListWorker() {
+function* retrieveAddressListWorker(action) {
   try {
-    const res = yield call(axios.get, `${baseApi}/address`);
-    yield put(addressAction.retrieveAddressSuccess(res.data));
+    const query = qs.stringify(action.payload);
+    const res = yield call(axios.get, `${baseApi}/address?${query}`);
+
+    yield put(addressAction.retrieveAddressListDataUpdate(res.data.data));
+    if (res.data?.pagination?.total) {
+      yield put(
+        addressAction.retrieveAddressListPaginationUpdate(res.data.pagination)
+      );
+    }
+    yield put(addressAction.retrieveAddressListSuccess(res.data));
   } catch (error) {
     yield put(addressAction.retrieveAddressFailed(error.response.data));
   }
