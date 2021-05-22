@@ -1,16 +1,16 @@
 import { baseApi } from "@commons/config/index";
-import { Button, Spinner } from "@components/atoms/index";
-import { SideBar } from "@components/organisms/index";
-import Dashboard from "@components/templates/Dashboard/index";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  userAction,
   useRetrieveProfileData,
   useUpdatePasswordLoading,
   useUpdateProfileLoading,
   useUpdateProfilePictureLoading,
   useUserAction,
-} from "commons/redux/users/selector";
-import { userAction } from "commons/redux/users/slice";
+} from "@commons/redux/user";
+import { Button, Spinner } from "@components/atoms/index";
+import { SideBar } from "@components/organisms/index";
+import Dashboard from "@components/templates/Dashboard/index";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";

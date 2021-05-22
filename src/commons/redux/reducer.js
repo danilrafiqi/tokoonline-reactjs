@@ -2,11 +2,11 @@ import { combineReducers } from "redux";
 import { addressReducer } from "./address/slice";
 import { authReducer } from "./auth/slice";
 import { cartReducer } from "./cart/slice";
-import { categoryReducer } from "./categories/slice";
+import { categoryReducer } from "./category/slice";
 import { couponReducer } from "./coupon/slice";
 import { orderReducer } from "./order/slice";
 import { productReducer } from "./product/slice";
-import { userReducer } from "./users/slice";
+import { userReducer } from "./user/slice";
 
 const reducer = combineReducers({
   auth: authReducer,

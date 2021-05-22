@@ -1,10 +1,10 @@
+import { baseApi } from "@commons/config/index";
 import axios from "axios";
+import qs from "qs";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { baseApi } from "../../config";
 import { cartAction } from "./slice";
-
 // WORKER
-function* addCartFetchWorker(action) {
+function* addCartWorker(action) {
   try {
     const res = yield call(axios.post, `${baseApi}/carts`, {
       product_id: action.payload.product_id,
@@ -16,7 +16,7 @@ function* addCartFetchWorker(action) {
   }
 }
 
-function* updateCartFetchWorker(action) {
+function* updateCartWorker(action) {
   try {
     const res = yield call(axios.put, `${baseApi}/carts/${action.payload.id}`, {
       product_id: action.payload.product_id,
@@ -28,19 +28,43 @@ function* updateCartFetchWorker(action) {
   }
 }
 
-function* retrieveCartListWorker() {
+function* retrieveCartListWorker(action) {
   try {
-    const res = yield call(axios.get, `${baseApi}/carts`);
-    yield put(cartAction.cartsSuccess(res.data));
-    yield put(cartAction.cartsUpdate(res.data));
+    const query = qs.stringify(action.payload);
+    const res = yield call(axios.get, `${baseApi}/carts?${query}`);
+
+    yield put(cartAction.retrieveCartListDataUpdate(res.data.data));
+    if (res.data?.pagination?.total) {
+      yield put(
+        cartAction.retrieveCartListPaginationUpdate(res.data.pagination)
+      );
+    }
+    yield put(cartAction.retrieveCartListSuccess(res.data));
   } catch (error) {
-    yield put(cartAction.cartsFailed(error.response.data));
+    yield put(cartAction.retrieveCartListFailed(error.response.data));
+  }
+}
+
+function* retrieveCartDetailWorker(action) {
+  try {
+    const res = yield call(
+      axios.get,
+      `${baseApi}/products/${action.payload.id}`
+    );
+    yield put(cartAction.retrieveProductDetailDataUpdate(res.data));
+    yield put(cartAction.retrieveProductDetailSuccess(res.data));
+  } catch (error) {
+    yield put(cartAction.retrieveProductDetailFailed(error.response.data));
   }
 }
 
 // WATCHER
 export const cartWatcher = [
-  takeLatest(cartAction.addCartFetch.type, addCartFetchWorker),
-  takeLatest(cartAction.updateCartFetch.type, updateCartFetchWorker),
-  takeLatest(cartAction.cartsFetch.type, retrieveCartListWorker),
+  takeLatest(cartAction.addCartExecute.type, addCartWorker),
+  takeLatest(cartAction.updateCartExecute.type, updateCartWorker),
+  takeLatest(cartAction.retrieveCartListExecute.type, retrieveCartListWorker),
+  takeLatest(
+    cartAction.retrieveCartDetailExecute.type,
+    retrieveCartDetailWorker
+  ),
 ];

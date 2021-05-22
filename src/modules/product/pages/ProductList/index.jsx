@@ -1,10 +1,12 @@
-import { useRetrieveProductListPagination } from "@commons/redux/product/selector";
-import { productAction } from "@commons/redux/product/slice";
+import { useRetrieveCategoryListData } from "@commons/redux/category/selector";
+import { categoryAction } from "@commons/redux/category/slice";
+import {
+  productAction,
+  useRetrieveProductListPagination,
+} from "@commons/redux/product";
 import { Pagination } from "@components/moleculs/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useRetrieveCategoryListData } from "commons/redux/categories/selector";
-import { categoryAction } from "commons/redux/categories/slice";
-import { useRetrieveProductListData } from "commons/redux/products";
+import { useRetrieveProductListData } from "commons/redux/product";
 import { currencyFormat } from "commons/utils/index";
 import ProductCard from "modules/product/components/ProductCard/index";
 import React, { useCallback, useEffect, useState } from "react";

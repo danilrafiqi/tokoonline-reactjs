@@ -29,10 +29,12 @@ const productSlice = createSlice({
     retrieveProductListDataUpdate: (state, action) => ({
       ...state,
       retrieveProductListData: action.payload,
+      action: action.type,
     }),
     retrieveProductListPaginationUpdate: (state, action) => ({
       ...state,
       retrieveProductListPagination: action.payload,
+      action: action.type,
     }),
 
     retrieveProductListExecute: (state, action) => ({

@@ -1,6 +1,6 @@
 import img from "@assets/img/index";
+import { useRetrieveCartListData } from "@commons/redux/cart";
 import { CircleButton } from "@components/atoms/index";
-import { useCarts } from "commons/redux/cart/selector";
 import { cartAction } from "commons/redux/cart/slice";
 import React, { useCallback, useEffect } from "react";
 import { IoCartOutline, IoPersonOutline, IoSearch } from "react-icons/io5";
@@ -9,11 +9,11 @@ import { Link, useHistory } from "react-router-dom";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
-  const cartList = useCarts();
+  const cartList = useRetrieveCartListData();
   const history = useHistory();
 
   const handleFetchCarts = useCallback(() => {
-    dispatch(cartAction.cartsFetch());
+    dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
   useEffect(() => {

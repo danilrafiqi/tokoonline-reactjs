@@ -4,7 +4,7 @@ import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { useAddCartLoading, useCartAction } from "commons/redux/cart/selector";
 import { cartAction } from "commons/redux/cart/slice";
-import { useRetrieveProductDetailData } from "commons/redux/products";
+import { useRetrieveProductDetailData } from "commons/redux/product";
 import { currencyFormat } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

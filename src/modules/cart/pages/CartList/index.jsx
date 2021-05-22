@@ -1,8 +1,7 @@
+import { cartAction, useRetrieveCartListData } from "@commons/redux/cart";
 import { BackButton, Button } from "@components/atoms/index";
 import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useCarts } from "commons/redux/cart/selector";
-import { cartAction } from "commons/redux/cart/slice";
 import {
   currencyFormat,
   deleteChecked,
@@ -17,13 +16,13 @@ import "./index.css";
 const CartList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const cartList = useCarts();
+  const cartList = useRetrieveCartListData();
 
   const [checkedItem, setCheckedItem] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
   const handleFetchCarts = useCallback(() => {
-    dispatch(cartAction.cartsFetch());
+    dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
   const handleUpdateCart = useCallback(

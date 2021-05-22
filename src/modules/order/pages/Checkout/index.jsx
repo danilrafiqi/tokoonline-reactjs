@@ -1,14 +1,16 @@
-import { BackButton, Button, Spinner } from "@components/atoms/index";
-import Dashboard from "@components/templates/Dashboard/index";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  addressAction,
   useAddressAction,
   useAddressList,
   useCreateAddressLoading,
-} from "commons/redux/address/selector";
-import { addressAction } from "commons/redux/address/slice";
-import { useCartsSelected } from "commons/redux/cart/selector";
-import { cartAction } from "commons/redux/cart/slice";
+} from "@commons/redux/address";
+import {
+  cartAction,
+  useRetrieveCartListSelectedData,
+} from "@commons/redux/cart";
+import { BackButton, Button, Spinner } from "@components/atoms/index";
+import Dashboard from "@components/templates/Dashboard/index";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { currencyFormat } from "commons/utils/index";
 import sumBy from "lodash/sumBy";
 import React, { useCallback, useEffect } from "react";
@@ -45,13 +47,13 @@ const Checkout = () => {
     setModalAddressIsOpen(false);
   };
 
-  const cartList = useCartsSelected();
+  const cartList = useRetrieveCartListSelectedData();
   const addressList = useAddressList();
   const loading = useCreateAddressLoading();
   const addressActionState = useAddressAction();
 
   const handleFetchCarts = useCallback(() => {
-    dispatch(cartAction.cartsFetch());
+    dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
   const handleFetchAddress = useCallback(() => {

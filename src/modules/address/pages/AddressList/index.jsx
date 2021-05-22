@@ -1,9 +1,9 @@
+import { useCategories } from "@commons/redux/category/selector";
+import { categoryAction } from "@commons/redux/category/slice";
 import { useProducts } from "@commons/redux/product/selector";
 import { productsAction } from "@commons/redux/product/slice";
 import { Pagination } from "@components/moleculs/index";
 import Dashboard from "@components/templates/Dashboard/index";
-import { useCategories } from "commons/redux/categories/selector";
-import { categoriesAction } from "commons/redux/categories/slice";
 import { currencyFormat } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ const ProductList = () => {
   const products = useProducts();
 
   const handleFetchCategories = useCallback(() => {
-    dispatch(categoriesAction.categoriesFetch());
+    dispatch(categoryAction.categoriesFetch());
   }, [dispatch]);
 
   const handleFetchProducts = useCallback(() => {

@@ -12,26 +12,28 @@ const updateCartInitialState = {
   updateCartLoading: false,
 };
 
-const cartsInitialState = {
-  cartsRespons: undefined,
-  cartsError: undefined,
-  cartsLoading: false,
+const retrieveCartListInitialState = {
+  retrieveCartListRespons: undefined,
+  retrieveCartListError: undefined,
+  retrieveCartListLoading: false,
 };
 
-const cartDetailInitialState = {
-  cartDetailRespons: undefined,
-  cartDetailError: undefined,
-  cartDetailLoading: false,
-  cartDetail: {},
+const retrieveCartDetailInitialState = {
+  retrieveCartDetailRespons: undefined,
+  retrieveCartDetailError: undefined,
+  retrieveCartDetailLoading: false,
 };
 
 const initialState = {
   ...addCartInitialState,
   ...updateCartInitialState,
+  ...retrieveCartListInitialState,
+  ...retrieveCartDetailInitialState,
   action: "",
-  cartList: [],
-  cartPagination: [],
-  cartListSelected: [],
+  retrieveCartListData: [],
+  retrieveCartListPagination: {},
+  retrieveCartDetailData: {},
+  retrieveCartListSelectedData: [],
 };
 
 const cartSlice = createSlice({
@@ -39,7 +41,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     //#region addCart
-    addCartFetch: (state, action) => ({
+    addCartExecute: (state, action) => ({
       ...state,
       addCartLoading: true,
       action: action.type,
@@ -63,7 +65,7 @@ const cartSlice = createSlice({
     //#endregion
 
     //#region updateCart
-    updateCartFetch: (state, action) => ({
+    updateCartExecute: (state, action) => ({
       ...state,
       updateCartLoading: true,
       action: action.type,
@@ -75,7 +77,7 @@ const cartSlice = createSlice({
     }),
     updateCartFailed: (state, action) => ({
       ...state,
-      updateCartLoading: true,
+      updateCartLoading: false,
       action: action.type,
     }),
     updateCartReset: (state, action) => ({
@@ -85,69 +87,76 @@ const cartSlice = createSlice({
     }),
     //#endregion
 
-    //#region carts
-    cartsFetch: (state, action) => ({
+    //#region retrieveCartList
+    retrieveCartListDataUpdate: (state, action) => ({
       ...state,
-      cartsLoading: true,
+      retrieveCartListData: action.payload,
       action: action.type,
     }),
-    cartsSuccess: (state, action) => ({
+    retrieveCartListPaginationUpdate: (state, action) => ({
       ...state,
-      cartsLoading: false,
-      cartsRespons: action.payload,
+      retrieveCartListPagination: action.payload,
       action: action.type,
     }),
-    cartsUpdate: (state, action) => ({
+
+    retrieveCartListExecute: (state, action) => ({
       ...state,
-      cartsLoading: false,
-      cartList: action.payload.data,
-      cartPagination: action.payload.pagination,
+      retrieveCartListLoading: true,
       action: action.type,
     }),
-    cartsFailed: (state, action) => ({
+    retrieveCartListSuccess: (state, action) => ({
       ...state,
-      cartsLoading: true,
-      cartsError: action.payload,
+      retrieveCartListLoading: false,
+      retrieveCartListRespons: action.payload,
       action: action.type,
     }),
-    cartsReset: (state, action) => ({
+    retrieveCartListFailed: (state, action) => ({
       ...state,
-      ...cartsInitialState,
+      retrieveCartListLoading: true,
+      retrieveCartListError: action.payload,
+      action: action.type,
+    }),
+    retrieveCartListReset: (state, action) => ({
+      ...state,
+      ...retrieveCartListInitialState,
       action: action.type,
     }),
     //#endregion
 
-    //#region cartsDetail
-    cartDetailFetch: (state, action) => ({
+    //#region retrieveCartDetail
+    retrieveCartDetailDataUpdate: (state, action) => ({
       ...state,
-      cartDetailLoading: true,
+      retrieveCartDetailData: action.payload,
+    }),
+
+    retrieveCartDetailExecute: (state, action) => ({
+      ...state,
+      retrieveCartDetailLoading: true,
       action: action.type,
     }),
-    cartDetailSuccess: (state, action) => ({
+    retrieveCartDetailSuccess: (state, action) => ({
       ...state,
-      cartDetailLoading: false,
-      cartDetailRespons: action.payload,
-      cartDetail: action.payload,
+      retrieveCartDetailLoading: false,
+      retrieveCartDetailRespons: action.payload,
       action: action.type,
     }),
-    cartDetailFailed: (state, action) => ({
+    retrieveCartDetailFailed: (state, action) => ({
       ...state,
-      cartDetailLoading: true,
-      cartDetailError: action.payload,
+      retrieveCartDetailLoading: true,
+      retrieveCartDetailError: action.payload,
       action: action.type,
     }),
-    cartDetailReset: (state, action) => ({
+    retrieveCartDetailReset: (state, action) => ({
       ...state,
-      ...cartDetailInitialState,
+      ...retrieveCartDetailInitialState,
       action: action.type,
     }),
     //#endregion
 
-    //#region carts
-    cartsSelectedUpdate: (state, action) => ({
+    //#region retrieveCartListSelected
+    retrieveCartListSelectedDataUpdate: (state, action) => ({
       ...state,
-      cartsLoading: false,
-      cartListSelected: action.payload,
+      retrieveCartListSelectedData: action.payload,
       action: action.type,
     }),
     //#endregion
