@@ -12,13 +12,13 @@ const Dashboard = (props) => {
   const cartList = useRetrieveCartListData();
   const history = useHistory();
 
-  const handleFetchCarts = useCallback(() => {
+  const handleRetrieveCartList = useCallback(() => {
     dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
   useEffect(() => {
-    handleFetchCarts();
-  }, [handleFetchCarts]);
+    handleRetrieveCartList();
+  }, [handleRetrieveCartList]);
 
   return (
     <div className="bg-white container mx-auto 2xl:max-w-7xl">

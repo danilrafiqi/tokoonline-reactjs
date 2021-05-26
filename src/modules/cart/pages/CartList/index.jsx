@@ -21,20 +21,20 @@ const CartList = () => {
   const [checkedItem, setCheckedItem] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
-  const handleFetchCarts = useCallback(() => {
+  const handleRetrieveCartList = useCallback(() => {
     dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
   const handleUpdateCart = useCallback(
     (param) => {
-      dispatch(cartAction.updateCartFetch(param));
+      dispatch(cartAction.updateCartExecute(param));
     },
     [dispatch]
   );
 
   useEffect(() => {
-    handleFetchCarts();
-  }, [handleFetchCarts]);
+    handleRetrieveCartList();
+  }, [handleRetrieveCartList]);
 
   const finalData = cartList.filter((val) => {
     return findCheckedValue(checkedItem, val.id);

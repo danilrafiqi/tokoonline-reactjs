@@ -31,7 +31,7 @@ const Login = () => {
 
   //#region HANDLER
   const handleLogin = useCallback(
-    (payload) => dispatch(authAction.loginFetch(payload)),
+    (payload) => dispatch(authAction.loginExecute(payload)),
     [dispatch]
   );
 

@@ -20,7 +20,7 @@ const ProductDetail = () => {
   const addCartLoading = useAddCartLoading();
   const cartActionState = useCartAction();
 
-  const handleFetchProductDetail = useCallback(
+  const handleRetrieveProductDetail = useCallback(
     (param) => {
       dispatch(productAction.retrieveProductDetailExecute(param));
     },
@@ -29,16 +29,16 @@ const ProductDetail = () => {
 
   const handleAddCart = useCallback(
     (param) => {
-      dispatch(cartAction.addCartFetch(param));
+      dispatch(cartAction.addCartExecute(param));
     },
     [dispatch]
   );
 
   useEffect(() => {
-    handleFetchProductDetail({
+    handleRetrieveProductDetail({
       id: id,
     });
-  }, [handleFetchProductDetail, id]);
+  }, [handleRetrieveProductDetail, id]);
 
   useEffect(() => {
     dispatch(productAction.retrieveProductDetailReset());

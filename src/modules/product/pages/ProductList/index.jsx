@@ -21,11 +21,11 @@ const ProductList = () => {
   const productList = useRetrieveProductListData();
   const productPagination = useRetrieveProductListPagination();
 
-  const handleFetchCategories = useCallback(() => {
+  const handleRetrieveCategoryList = useCallback(() => {
     dispatch(categoryAction.retrieveCategoryListExecute());
   }, [dispatch]);
 
-  const handleFetchProducts = useCallback(
+  const handleRetrieveProductList = useCallback(
     (payload) => {
       dispatch(
         productAction.retrieveProductListExecute({
@@ -38,12 +38,12 @@ const ProductList = () => {
   );
 
   useEffect(() => {
-    handleFetchCategories();
-    handleFetchProducts({
+    handleRetrieveCategoryList();
+    handleRetrieveProductList({
       perPage: 8,
       currentPage: 1,
     });
-  }, [handleFetchCategories, handleFetchProducts]);
+  }, [handleRetrieveCategoryList, handleRetrieveProductList]);
 
   return (
     <Dashboard>
@@ -85,7 +85,7 @@ const ProductList = () => {
             active={pagination}
             onClick={(v) => {
               setPagination(v);
-              handleFetchProducts({
+              handleRetrieveProductList({
                 perPage: 8,
                 currentPage: v,
               });

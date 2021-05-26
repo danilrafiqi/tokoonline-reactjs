@@ -52,11 +52,11 @@ const Checkout = () => {
   const loading = useCreateAddressLoading();
   const addressActionState = useAddressAction();
 
-  const handleFetchCarts = useCallback(() => {
+  const handleRetrieveCartList = useCallback(() => {
     dispatch(cartAction.retrieveCartListExecute());
   }, [dispatch]);
 
-  const handleFetchAddress = useCallback(() => {
+  const handleRetrieveAddressList = useCallback(() => {
     dispatch(addressAction.retrieveAddressListExecute());
   }, [dispatch]);
 
@@ -66,17 +66,17 @@ const Checkout = () => {
   );
 
   useEffect(() => {
-    handleFetchCarts();
-    handleFetchAddress();
-  }, [handleFetchCarts, handleFetchAddress]);
+    handleRetrieveCartList();
+    handleRetrieveAddressList();
+  }, [handleRetrieveCartList, handleRetrieveAddressList]);
 
   //#region WATCHER
   useEffect(() => {
     if (addressActionState === addressAction.createAddressSuccess.type) {
-      handleFetchAddress();
+      handleRetrieveAddressList();
       closeAddressModal();
     }
-  }, [addressActionState, handleFetchAddress]);
+  }, [addressActionState, handleRetrieveAddressList]);
   //#endregion
 
   const totalBarang = sumBy(cartList, (data) => {

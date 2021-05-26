@@ -36,7 +36,7 @@ const Register = () => {
 
   //#region HANDLER
   const handleRegister = useCallback(
-    (payload) => dispatch(authAction.registerFetch(payload)),
+    (payload) => dispatch(authAction.registerExecute(payload)),
     [dispatch]
   );
 
