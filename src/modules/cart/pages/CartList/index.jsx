@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import { cartAction, useRetrieveCartListData } from "@commons/redux/cart";
 import {
   currencyFormat,
@@ -84,7 +85,7 @@ const CartList = () => {
               return (
                 <div
                   key={i}
-                  className="flex flex-row justify-center items-center"
+                  className="flex flex-row justify-start items-center"
                 >
                   <input
                     id={data.id}
@@ -113,8 +114,8 @@ const CartList = () => {
                     >
                       <img
                         alt="dummy"
-                        className="rounded-2xl "
-                        src={data.product.image}
+                        className="rounded-2xl w-full h-full object-cover"
+                        src={baseApi + "/" + data.product.image}
                       ></img>
                     </div>
 

@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import {
   categoryAction,
   productAction,
@@ -71,7 +72,7 @@ const ProductList = () => {
                   onClick={() => {
                     history.push(`/product/${data.id}`);
                   }}
-                  image={data.image}
+                  image={baseApi + "/" + data.image}
                   name={data.name}
                   price={currencyFormat(data.price)}
                 />

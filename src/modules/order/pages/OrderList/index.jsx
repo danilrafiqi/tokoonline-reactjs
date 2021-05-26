@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import { orderAction, useRetrieveOrderListData } from "@commons/redux/order";
 import { Button } from "@components/atoms/index";
 import { SideBar } from "@components/organisms/index";
@@ -64,8 +65,8 @@ const OrderList = () => {
                   <div className="w-32 h-32">
                     <img
                       alt="dummy"
-                      className="rounded-2xl "
-                      src={data.product.image}
+                      className="rounded-2xl w-full h-full object-cover"
+                      src={baseApi + "/" + data.product.image}
                     ></img>
                   </div>
 

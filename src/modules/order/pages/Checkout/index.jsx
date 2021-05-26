@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import {
   addressAction,
   useAddressAction,
@@ -138,8 +139,8 @@ const Checkout = () => {
                     >
                       <img
                         alt="dummy"
-                        className="rounded-2xl "
-                        src={data.product.image}
+                        className="rounded-2xl w-full h-full object-cover"
+                        src={baseApi + "/" + data.product.image}
                       ></img>
                     </div>
 
