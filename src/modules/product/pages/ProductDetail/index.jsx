@@ -1,3 +1,4 @@
+import { baseApi } from "@commons/config/index";
 import { productAction } from "@commons/redux/product/slice";
 import { BackButton, Button, Spinner } from "@components/atoms/index";
 import CartButton from "@components/moleculs/CartButton/index";
@@ -70,10 +71,10 @@ const ProductDetail = () => {
               <img
                 alt="dummy"
                 className="rounded-2xl w-96 h-72 object-cover"
-                src={productDetail.image}
+                src={baseApi + "/" + productDetail.image}
               ></img>
-
-              <div className="mt-4 flex flex-row justify-between">
+              {/* TODO : CREATE GALERY IMAGE */}
+              {/* <div className="mt-4 flex flex-row justify-between">
                 {Array.from(Array(3).keys()).map((i) => {
                   return (
                     <img
@@ -84,7 +85,7 @@ const ProductDetail = () => {
                     ></img>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
 
             <div className="flex-1 ml-8">

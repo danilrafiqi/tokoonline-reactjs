@@ -14,6 +14,9 @@ import Dashboard from "@components/templates/Dashboard/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { currencyFormat } from "commons/utils/index";
 import sumBy from "lodash/sumBy";
+import AddressCard from "modules/order/components/AddressCard/index";
+import AddressSelected from "modules/order/components/AddressSelected/index";
+import CartCard from "modules/order/components/CartCard/index";
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
@@ -108,16 +111,12 @@ const Checkout = () => {
             <div>
               <div>Alamat Pengiriman</div>
               {addressList.length > 0 && (
-                <div className="border border-l-0 border-r-0 py-4 text-gray-500">
-                  <div className="font-bold text-gray-900">
-                    {addressList[addressSelected].name}
-                  </div>
-                  <div className="text-gray-700">
-                    {addressList[addressSelected].phone}
-                  </div>
-                  <div>{addressList[addressSelected].description}</div>
-                  <div>{addressList[addressSelected].address}</div>
-                </div>
+                <AddressSelected
+                  addressName={addressList[addressSelected].name}
+                  phone={addressList[addressSelected].phone}
+                  description={addressList[addressSelected].description}
+                  address={addressList[addressSelected].address}
+                />
               )}
 
               <Button className="my-4" onClick={openModal}>
@@ -125,37 +124,20 @@ const Checkout = () => {
               </Button>
               <hr className="border-4 border-gray-100" />
             </div>
+
             {/* //#region LIST CART */}
             <div className="mt-8">
               {cartList.map((data, i) => {
                 return (
-                  <div className="flex flex-row" key={i}>
-                    <div
-                      onClick={() => {
-                        history.push("/product/" + data.id);
-                      }}
-                      key={i}
-                      className="w-32 h-32 mb-4"
-                    >
-                      <img
-                        alt="dummy"
-                        className="rounded-2xl w-full h-full object-cover"
-                        src={baseApi + "/" + data.product.image}
-                      ></img>
-                    </div>
-
-                    <div className="ml-8 flex-1 flex flex-col justify-start items-start">
-                      <div className="text-xl text-gray-500 line-clamp-2">
-                        {data.product.name}
-                      </div>
-                      <div className="font-bold text-xl text-gray-700">
-                        {currencyFormat(data.product.price)}
-                      </div>
-                      <div className="font-light text-gray-700 mb-4">
-                        x {data.quantity}
-                      </div>
-                    </div>
-                  </div>
+                  <CartCard
+                    onClick={() => {
+                      history.push("/product/" + data.id);
+                    }}
+                    image={baseApi + "/" + data.product.image}
+                    productName={data.product.name}
+                    price={currencyFormat(data.product.price)}
+                    quantity={data.quantity}
+                  />
                 );
               })}
             </div>
@@ -234,26 +216,17 @@ const Checkout = () => {
         <div className="mt-8">
           {addressList.map((data, i) => {
             return (
-              <div
+              <AddressCard
                 key={i}
-                className="border text-gray-500 p-4 rounded-xl border-blue-300 my-2 flex flex-row justify-between items-center"
-              >
-                <div>
-                  <div className="font-bold text-gray-900">{data.name}</div>
-                  <div className="text-gray-700">{data.phone}</div>
-                  <div>{data.description}</div>
-                  <div>{data.address}</div>
-                </div>
-                <button
-                  onClick={() => {
-                    closeModal();
-                    setAddressSelected(i);
-                  }}
-                  className="bg-blue-600 p-2 px-6 rounded-md hover:bg-blue-500 text-white flex items-center justify-center"
-                >
-                  Pilih
-                </button>
-              </div>
+                addressName={data.name}
+                description={data.description}
+                address={data.address}
+                phone={data.phone}
+                onClick={() => {
+                  closeModal();
+                  setAddressSelected(i);
+                }}
+              />
             );
           })}
         </div>

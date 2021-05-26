@@ -6,9 +6,9 @@ import {
   findCheckedValue,
 } from "@commons/utils";
 import { BackButton, Button } from "@components/atoms/index";
-import CartButton from "@components/moleculs/CartButton/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import sumBy from "lodash/sumBy";
+import CartCard from "modules/cart/components/CartCard/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -83,64 +83,36 @@ const CartList = () => {
 
             {cartList.map((data, i) => {
               return (
-                <div
+                <CartCard
                   key={i}
-                  className="flex flex-row justify-start items-center"
-                >
-                  <input
-                    id={data.id}
-                    type="checkbox"
-                    className="cart-card__checkbox w-5 h-5 mr-4"
-                    checked={findCheckedValue(checkedItem, data.id)}
-                    onChange={() => {
-                      if (findCheckedValue(checkedItem, data.id)) {
-                        setCheckedItem(deleteChecked(checkedItem, data.id));
-                        setCheckAll(false);
-                      } else {
-                        if (checkedItem.length === cartList.length - 1) {
-                          setCheckAll(true);
-                        }
-                        setCheckedItem((prev) => [...prev, data.id]);
+                  id={data.id}
+                  checked={findCheckedValue(checkedItem, data.id)}
+                  onCheck={() => {
+                    if (findCheckedValue(checkedItem, data.id)) {
+                      setCheckedItem(deleteChecked(checkedItem, data.id));
+                      setCheckAll(false);
+                    } else {
+                      if (checkedItem.length === cartList.length - 1) {
+                        setCheckAll(true);
                       }
-                    }}
-                  />
-                  <label htmlFor={data.id} className="flex flex-row">
-                    <div
-                      onClick={() => {
-                        history.push("/product/" + data.id);
-                      }}
-                      key={data.product.name}
-                      className="w-32 h-32 mb-4"
-                    >
-                      <img
-                        alt="dummy"
-                        className="rounded-2xl w-full h-full object-cover"
-                        src={baseApi + "/" + data.product.image}
-                      ></img>
-                    </div>
-
-                    <div className="ml-8 flex-1 flex flex-col justify-start items-start">
-                      <div className="text-xl text-gray-500 line-clamp-2">
-                        {data.product.name}
-                      </div>
-                      <div className="font-bold text-xl text-gray-700 mb-4">
-                        {currencyFormat(data.product.price)}
-                      </div>
-
-                      <CartButton
-                        total={data.quantity}
-                        onClick={(val) => {
-                          handleUpdateCart({
-                            id: data.id,
-                            quantity: val,
-                            product_id: data.product.id,
-                          });
-                        }}
-                        buttonClassName="cart__btn"
-                      />
-                    </div>
-                  </label>
-                </div>
+                      setCheckedItem((prev) => [...prev, data.id]);
+                    }
+                  }}
+                  onClick={() => {
+                    history.push("/product/" + data.id);
+                  }}
+                  image={baseApi + "/" + data.product.image}
+                  productName={data.product.name}
+                  price={currencyFormat(data.product.price)}
+                  total={data.quantity}
+                  onCartUpdate={(val) => {
+                    handleUpdateCart({
+                      id: data.id,
+                      quantity: val,
+                      product_id: data.product.id,
+                    });
+                  }}
+                />
               );
             })}
           </div>
