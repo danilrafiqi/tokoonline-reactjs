@@ -7,9 +7,7 @@ import {
   useRetrieveAddressListData,
   useRetrieveCartListSelectedData,
 } from "@commons/redux";
-import { BackButton, Button, Spinner } from "@components/atoms/index";
-import { TotalCard } from "@components/moleculs/index";
-import Dashboard from "@components/templates/Dashboard/index";
+import { BackButton, Button, Dashboard, Spinner, TotalCard } from "@components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { currencyFormat } from "commons/utils/index";
 import sumBy from "lodash/sumBy";

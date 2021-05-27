@@ -6,10 +6,8 @@ import {
   useUpdateProfileLoading,
   useUpdateProfilePictureLoading,
   useUserAction,
-} from "@commons/redux/user";
-import { Button, Spinner } from "@components/atoms/index";
-import { SideBar } from "@components/organisms/index";
-import Dashboard from "@components/templates/Dashboard/index";
+} from "@commons/redux";
+import { Button, Dashboard, SideBar, Spinner } from "@components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

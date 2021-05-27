@@ -5,8 +5,7 @@ import {
   deleteChecked,
   findCheckedValue,
 } from "@commons/utils";
-import { BackButton, Button } from "@components/atoms/index";
-import Dashboard from "@components/templates/Dashboard/index";
+import { BackButton, Dashboard, TotalCard } from "@components/index";
 import sumBy from "lodash/sumBy";
 import CartCard from "modules/cart/components/CartCard/index";
 import React, { useCallback, useEffect, useState } from "react";
@@ -50,6 +49,13 @@ const CartList = () => {
       return data.product.price * data.quantity;
     })
   );
+
+  // const handleUpdateCartSuccess = () => {
+  //   return MySwal.fire({
+  //     text: "Something went wrong!",
+  //     icon: "success",
+  //   });
+  // };
 
   return (
     <Dashboard>
@@ -120,36 +126,20 @@ const CartList = () => {
 
           {/* //#region TOTAL */}
           <div>
-            <div className="border rounded-xl w-80 p-4">
-              <div className="mt-4">
-                <div className="font-semibold mb-4">Ringkasan belanja</div>
-                <div className="text-gray-500 flex flex-row text-sm justify-between">
-                  <div>Total Harga ({totalBarang} barang)</div>
-                  <div>{totalPrice}</div>
-                </div>
-                <hr className="my-4" />
-                <div className="font-semibold flex flex-row justify-between">
-                  <div>Total</div>
-                  <div>{totalPrice}</div>
-                </div>
-
-                <Button
-                  onClick={async () => {
-                    dispatch(
-                      cartAction.retrieveCartListSelectedDataUpdate(
-                        cartList.filter((data) => {
-                          return findCheckedValue(checkedItem, data.id);
-                        })
-                      )
-                    );
-                    history.push("/checkout");
-                  }}
-                  className="w-full mt-4"
-                >
-                  Beli
-                </Button>
-              </div>
-            </div>
+            <TotalCard
+              totalItem={totalBarang}
+              totalPrice={totalPrice}
+              onClick={() => {
+                dispatch(
+                  cartAction.retrieveCartListSelectedDataUpdate(
+                    cartList.filter((data) => {
+                      return findCheckedValue(checkedItem, data.id);
+                    })
+                  )
+                );
+                history.push("/checkout");
+              }}
+            />
           </div>
           {/* //#endregion */}
         </div>

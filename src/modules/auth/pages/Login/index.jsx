@@ -89,7 +89,6 @@ const Login = () => {
         {errors?.email && (
           <div className="text-red-500">{errors?.email?.message}</div>
         )}
-        {console.log("errors", errors)}
         <input
           name="password"
           type="password"
