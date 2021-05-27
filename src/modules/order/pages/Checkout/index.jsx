@@ -1,22 +1,23 @@
 import { baseApi } from "@commons/config/index";
 import {
   addressAction,
+  cartAction,
   useAddressAction,
   useCreateAddressLoading,
   useRetrieveAddressListData,
-} from "@commons/redux/address";
-import {
-  cartAction,
   useRetrieveCartListSelectedData,
-} from "@commons/redux/cart";
+} from "@commons/redux";
 import { BackButton, Button, Spinner } from "@components/atoms/index";
+import { TotalCard } from "@components/moleculs/index";
 import Dashboard from "@components/templates/Dashboard/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { currencyFormat } from "commons/utils/index";
 import sumBy from "lodash/sumBy";
-import AddressCard from "modules/order/components/AddressCard/index";
-import AddressSelected from "modules/order/components/AddressSelected/index";
-import CartCard from "modules/order/components/CartCard/index";
+import {
+  AddressCard,
+  AddressSelected,
+  CartCard,
+} from "modules/order/components/index";
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
@@ -146,38 +147,12 @@ const Checkout = () => {
 
           {/* //#region TOTAL */}
           <div>
-            <div className="border rounded-xl w-80 p-4">
-              <input
-                className="mb-4 w-full rounded-xl border border-gray-300"
-                type="text"
-                placeholder="Coupon"
-                name=""
-                id=""
-              />
-              <hr className="border-4 -mx-4 border-gray-100" />
-              <div className="mt-4">
-                <div className="font-semibold mb-4">Ringkasan belanja</div>
-                <div className="text-gray-500 flex flex-row text-sm justify-between">
-                  <div>Total Harga ({totalBarang} barang)</div>
-                  <div>
-                    {currencyFormat(
-                      sumBy(cartList, (data) => {
-                        return data.product.price * data.quantity;
-                      })
-                    )}
-                  </div>
-                </div>
-                <hr className="my-4" />
-                <div className="font-semibold flex flex-row justify-between">
-                  <div>Total</div>
-                  <div>{totalPrice}</div>
-                </div>
-
-                <Button className="w-full mt-4" onClick={openModal}>
-                  Beli
-                </Button>
-              </div>
-            </div>
+            <TotalCard
+              showCoupon
+              totalPrice={totalPrice}
+              totalItem={totalBarang}
+              onClick={openModal}
+            />
           </div>
           {/* //#endregion */}
         </div>
