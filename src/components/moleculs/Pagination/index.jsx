@@ -17,7 +17,6 @@ const Pagination = ({ active = 1, limit = 1, onClick }) => {
 
   return (
     <div className="flex flex-row justify-center">
-      {console.log("activeGtOne", activeGtOne)}
       <CircleButton
         className={`${!activeGtOne ? "pointer-events-none" : ""}`}
         onClick={() => onClick(active - 1)}

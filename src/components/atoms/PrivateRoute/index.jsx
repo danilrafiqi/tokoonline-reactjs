@@ -7,7 +7,6 @@ const PrivateRoute = (props) => {
       path={props.path}
       exact={props.exact}
       render={() => {
-        console.log("cek islogin", props.isLogin);
         return props.isLogin ? <props.component /> : <Redirect to="/login" />;
       }}
     />

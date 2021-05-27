@@ -7,7 +7,6 @@ import { orderAction } from "./slice";
 function* retrieveOrderListWorker(action) {
   try {
     const status = action.payload?.status;
-    console.log("action", action);
     const res = yield call(axios.get, `${baseApi}/orders?status=${status}`);
     yield put(orderAction.retrieveOrderListSuccess(res.data));
   } catch (error) {

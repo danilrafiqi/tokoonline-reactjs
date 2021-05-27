@@ -5,7 +5,6 @@ import CouponPercent from "./CouponPercent";
 const CouponCard = ({ code, description, percentage, fixedDiscount }) => {
   return (
     <div className="rounded-md shadow bg-white p-4">
-      {console.log({ code, description, percentage, fixedDiscount })}
       {fixedDiscount !== 0 ? (
         <CouponFixed fixedDiscount={fixedDiscount} />
       ) : (

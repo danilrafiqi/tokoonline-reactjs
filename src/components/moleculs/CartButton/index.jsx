@@ -6,7 +6,9 @@ const CartButton = ({ total = 1, onClick, buttonClassName }) => {
   return (
     <div className="cart-button flex flex-row justify-center">
       <CircleButton
-        className={`cart-button__btn ${buttonClassName}`}
+        className={`cart-button__btn ${buttonClassName} ${
+          total <= 1 && "pointer-events-none"
+        }`}
         onClick={() => total > 1 && onClick(total - 1)}
       >
         -

@@ -1,11 +1,18 @@
 import { baseApi } from "@commons/config/index";
-import { productAction } from "@commons/redux/product/slice";
-import { BackButton, Button, Spinner } from "@components/atoms/index";
-import CartButton from "@components/moleculs/CartButton/index";
-import Dashboard from "@components/templates/Dashboard/index";
-import { useAddCartLoading, useCartAction } from "commons/redux/cart/selector";
-import { cartAction } from "commons/redux/cart/slice";
-import { useRetrieveProductDetailData } from "commons/redux/product";
+import {
+  cartAction,
+  productAction,
+  useAddCartLoading,
+  useCartAction,
+  useRetrieveProductDetailData,
+} from "@commons/redux";
+import {
+  BackButton,
+  Button,
+  CartButton,
+  Dashboard,
+  Spinner,
+} from "@components";
 import { currencyFormat } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -51,13 +58,19 @@ const ProductDetail = () => {
 
   //#region WATCHER
   useEffect(() => {
-    if (
-      loading === "buyNow" &&
-      cartActionState === cartAction.addCartSuccess.type
-    ) {
-      history.push("/cart");
-    }
-  }, [cartActionState, history, loading]);
+    const actions = {
+      [cartAction.addCartSuccess.type]: () => {
+        if (loading === "buyNow") {
+          history.push("/cart");
+        }
+        if (loading === "addToCart") {
+          dispatch(cartAction.retrieveCartListExecute());
+        }
+      },
+      DEFAULT: () => undefined,
+    };
+    return (actions[cartActionState] || actions.DEFAULT)();
+  }, [cartActionState, history, loading, dispatch]);
   //#endregion
 
   return (
