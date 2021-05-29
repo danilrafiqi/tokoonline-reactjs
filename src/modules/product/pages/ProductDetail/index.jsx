@@ -13,7 +13,7 @@ import {
   Dashboard,
   Spinner,
 } from "@components";
-import { currencyFormat } from "commons/utils/index";
+import { currencyFormat, Swal } from "commons/utils/index";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router";
@@ -56,6 +56,13 @@ const ProductDetail = () => {
     return () => dispatch(cartAction.addCartReset());
   }, [dispatch]);
 
+  const handleUpdateCartSuccess = () => {
+    return Swal.fire({
+      text: "Success add to Cart",
+      icon: "success",
+    });
+  };
+
   //#region WATCHER
   useEffect(() => {
     const actions = {
@@ -64,8 +71,11 @@ const ProductDetail = () => {
           history.push("/cart");
         }
         if (loading === "addToCart") {
+          handleUpdateCartSuccess();
           dispatch(cartAction.retrieveCartListExecute());
         }
+        setQuantity(1);
+        setLoading("");
       },
       DEFAULT: () => undefined,
     };

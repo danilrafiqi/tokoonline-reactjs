@@ -59,13 +59,6 @@ const CartList = () => {
     })
   );
 
-  // const handleUpdateCartSuccess = () => {
-  //   return MySwal.fire({
-  //     text: "Something went wrong!",
-  //     icon: "success",
-  //   });
-  // };
-
   const debouncedValue = useDebounce(cartQuantity, 500);
   useEffect(() => {
     if (debouncedValue) {
