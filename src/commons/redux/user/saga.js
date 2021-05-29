@@ -27,7 +27,6 @@ function* updateProfileWorker(action) {
 
 function* updateProfilePictureWorker(action) {
   try {
-    console.log("action.payload", action.payload);
     const data = new FormData();
     data.append(
       "foto",

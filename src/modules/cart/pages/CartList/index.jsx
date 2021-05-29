@@ -152,7 +152,6 @@ const CartList = () => {
                     cartIdActive === data.id ? cartQuantity : data.quantity
                   }
                   onCartUpdate={(val) => {
-                    console.log("valvalval", val);
                     setCartIdActive(data.id);
                     setCartQuantity(val);
                     setCartProductId(data.product.id);
