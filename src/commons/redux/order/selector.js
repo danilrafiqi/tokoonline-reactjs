@@ -13,3 +13,9 @@ export const useRetrieveOrderListPagination = () => {
   return useSelector((state) => state.order.retrieveOrderListPagination);
 };
 //#endregion
+
+//#region checkout
+export const useCheckoutLoading = () => {
+  return useSelector((state) => state.order.checkoutLoading);
+};
+//#endregion

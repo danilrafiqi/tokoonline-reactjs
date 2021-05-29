@@ -14,10 +14,26 @@ function* retrieveOrderListWorker(action) {
   }
 }
 
+function* checkoutWorker(action) {
+  try {
+    const res = yield call(axios.post, `${baseApi}/checkout`, {
+      address_id: action.payload.address_id,
+      coupon_id: action.payload.coupon_id,
+      products: action.payload.products,
+      total: action.payload.total,
+      carts: action.payload.carts,
+    });
+    yield put(orderAction.checkoutSuccess(res.data));
+  } catch (error) {
+    yield put(orderAction.checkoutFailed(error.response.data));
+  }
+}
+
 // WATCHER
 export const orderWatcher = [
   takeLatest(
     orderAction.retrieveOrderListExecute.type,
     retrieveOrderListWorker
   ),
+  takeLatest(orderAction.checkoutExecute.type, checkoutWorker),
 ];

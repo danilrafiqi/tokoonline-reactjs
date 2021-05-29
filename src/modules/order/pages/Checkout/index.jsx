@@ -7,9 +7,11 @@ import {
   useRetrieveAddressListData,
   useRetrieveCartListSelectedData,
 } from "@commons/redux";
+import { useOrderAction } from "@commons/redux/order/selector";
+import { orderAction } from "@commons/redux/order/slice";
 import { BackButton, Button, Dashboard, Spinner, TotalCard } from "@components";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { currencyFormat } from "commons/utils/index";
+import { currencyFormat, Swal } from "commons/utils/index";
 import sumBy from "lodash/sumBy";
 import {
   AddressCard,
@@ -54,6 +56,7 @@ const Checkout = () => {
   const addressList = useRetrieveAddressListData();
   const loading = useCreateAddressLoading();
   const addressActionState = useAddressAction();
+  const orderActionState = useOrderAction();
 
   const handleRetrieveCartList = useCallback(() => {
     dispatch(cartAction.retrieveCartListExecute());
@@ -68,6 +71,30 @@ const Checkout = () => {
     [dispatch]
   );
 
+  const handleCheckout = useCallback(
+    (payload) => {
+      dispatch(
+        orderAction.checkoutExecute({
+          address_id: payload.address_id,
+          coupon_id: payload.coupon_id,
+          products: payload.products,
+          total: payload.total,
+          carts: payload.carts,
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const handleCheckoutSuccess = () => {
+    return Swal.fire({
+      text: "Success checkout",
+      icon: "success",
+    }).then(() => {
+      history.push("/order");
+    });
+  };
+
   useEffect(() => {
     handleRetrieveCartList();
     handleRetrieveAddressList();
@@ -80,17 +107,27 @@ const Checkout = () => {
       closeAddressModal();
     }
   }, [addressActionState, handleRetrieveAddressList]);
+
+  useEffect(() => {
+    if (orderActionState === orderAction.checkoutSuccess.type) {
+      handleCheckoutSuccess();
+    }
+  }, [orderActionState, handleCheckoutSuccess]);
+  //#endregion
+
+  //#region CLEAR
+  useEffect(() => {
+    return () => dispatch(orderAction.checkoutReset());
+  }, [dispatch]);
   //#endregion
 
   const totalBarang = sumBy(cartList, (data) => {
     return data.quantity;
   });
 
-  const totalPrice = currencyFormat(
-    sumBy(cartList, (data) => {
-      return data.product.price * data.quantity;
-    })
-  );
+  const totalPrice = sumBy(cartList, (data) => {
+    return data.product.price * data.quantity;
+  });
 
   const {
     register,
@@ -129,6 +166,7 @@ const Checkout = () => {
               {cartList.map((data, i) => {
                 return (
                   <CartCard
+                    key={i}
                     onClick={() => {
                       history.push("/product/" + data.id);
                     }}
@@ -142,14 +180,25 @@ const Checkout = () => {
             </div>
             {/* //#endregion */}
           </div>
-
+          {console.log("cartListcartList", cartList)}
           {/* //#region TOTAL */}
           <div>
             <TotalCard
               showCoupon
-              totalPrice={totalPrice}
+              totalPrice={currencyFormat(totalPrice)}
               totalItem={totalBarang}
-              onClick={openModal}
+              onClick={() =>
+                handleCheckout({
+                  address_id: addressList[addressSelected].id,
+                  coupon_id: 1,
+                  products: cartList.map((cart) => ({
+                    quantity: cart.quantity,
+                    product_id: cart.product.id,
+                  })),
+                  total: totalPrice,
+                  carts: cartList.map((cart) => cart.id),
+                })
+              }
             />
           </div>
           {/* //#endregion */}

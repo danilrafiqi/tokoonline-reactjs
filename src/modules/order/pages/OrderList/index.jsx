@@ -41,9 +41,10 @@ const OrderList = () => {
         </div>
         <div className="flex-1">
           <div className="flex">
-            {Object.keys(statusObject).map((val) => {
+            {Object.keys(statusObject).map((val, i) => {
               return (
                 <Button
+                  key={i}
                   className={`mx-1 ${
                     status === val ? "mx-1" : "order__btn-status"
                   }`}
@@ -58,8 +59,8 @@ const OrderList = () => {
           {orderListData.map((data, i) => {
             return (
               <div
-                className="flex flex-row shadow items-center rounded-2xl p-2 my-4 first:mt-0 last:mb-0"
                 key={i}
+                className="flex flex-row shadow items-center rounded-2xl p-2 my-4 first:mt-0 last:mb-0"
               >
                 <div className="flex flex-1">
                   <div className="w-32 h-32">
