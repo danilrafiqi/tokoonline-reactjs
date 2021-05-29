@@ -1,5 +1,5 @@
 import img from "@assets/img/index";
-import { useRetrieveCartListData } from "@commons/redux/cart";
+import { useRetrieveCartListPagination } from "@commons/redux";
 import { CircleButton } from "@components/atoms/index";
 import { cartAction } from "commons/redux/cart/slice";
 import React, { useCallback, useEffect } from "react";
@@ -9,7 +9,7 @@ import { Link, useHistory } from "react-router-dom";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
-  const cartList = useRetrieveCartListData();
+  const cartListPagination = useRetrieveCartListPagination();
   const history = useHistory();
 
   const handleRetrieveCartList = useCallback(() => {
@@ -46,9 +46,9 @@ const Dashboard = (props) => {
               onClick={() => history.push("/cart")}
               className="w-14 h-14 mr-2 relative"
             >
-              {cartList.length > 0 && (
+              {cartListPagination && cartListPagination.total > 0 && (
                 <div className="absolute -right-2 top-0 bg-red-600 text-white w-6 h-6 rounded-full">
-                  {cartList.length}
+                  {cartListPagination.total}
                 </div>
               )}
               <IoCartOutline />

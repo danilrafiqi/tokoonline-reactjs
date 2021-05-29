@@ -1,10 +1,15 @@
 import { baseApi } from "@commons/config/index";
-import { cartAction, useRetrieveCartListData } from "@commons/redux/cart";
+import {
+  cartAction,
+  useCartAction,
+  useRetrieveCartListData,
+} from "@commons/redux";
 import {
   currencyFormat,
   deleteChecked,
   findCheckedValue,
 } from "@commons/utils";
+import { useDebounce } from "@commons/utils/index";
 import { BackButton, Dashboard, TotalCard } from "@components/index";
 import sumBy from "lodash/sumBy";
 import CartCard from "modules/cart/components/CartCard/index";
@@ -17,9 +22,13 @@ const CartList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const cartList = useRetrieveCartListData();
+  const cartActionState = useCartAction();
 
   const [checkedItem, setCheckedItem] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
+  const [cartIdActive, setCartIdActive] = useState("");
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartProductId, setCartProductId] = useState("");
 
   const handleRetrieveCartList = useCallback(() => {
     dispatch(cartAction.retrieveCartListExecute());
@@ -56,6 +65,35 @@ const CartList = () => {
   //     icon: "success",
   //   });
   // };
+
+  const debouncedValue = useDebounce(cartQuantity, 500);
+  // Effect for API call
+  useEffect(
+    () => {
+      if (debouncedValue) {
+        handleUpdateCart({
+          id: cartIdActive,
+          quantity: debouncedValue,
+          product_id: cartProductId,
+        });
+      }
+    },
+    [debouncedValue] // Only call effect if debounced search term changes
+  );
+
+  //#region WATCHER
+  useEffect(() => {
+    const actions = {
+      [cartAction.addCartSuccess.type]: () => {
+        setCartIdActive("");
+        setCartQuantity(0);
+        setCartProductId("");
+      },
+      DEFAULT: () => undefined,
+    };
+    return (actions[cartActionState] || actions.DEFAULT)();
+  }, [cartActionState]);
+  //#endregion
 
   return (
     <Dashboard>
@@ -110,13 +148,14 @@ const CartList = () => {
                   image={baseApi + "/" + data.product.image}
                   productName={data.product.name}
                   price={currencyFormat(data.product.price)}
-                  total={data.quantity}
+                  total={
+                    cartIdActive === data.id ? cartQuantity : data.quantity
+                  }
                   onCartUpdate={(val) => {
-                    handleUpdateCart({
-                      id: data.id,
-                      quantity: val,
-                      product_id: data.product.id,
-                    });
+                    console.log("valvalval", val);
+                    setCartIdActive(data.id);
+                    setCartQuantity(val);
+                    setCartProductId(data.product.id);
                   }}
                 />
               );
