@@ -49,11 +49,11 @@ const ProductDetail = () => {
   }, [handleRetrieveProductDetail, id]);
 
   useEffect(() => {
-    dispatch(productAction.retrieveProductDetailReset());
+    return () => dispatch(productAction.retrieveProductDetailReset());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(cartAction.addCartReset());
+    return () => dispatch(cartAction.addCartReset());
   }, [dispatch]);
 
   //#region WATCHER
@@ -154,8 +154,8 @@ const ProductDetail = () => {
             </div>
           </div>
         )}
+        {/* //#endregion */}
       </div>
-      {/* //#endregion */}
     </Dashboard>
   );
 };
