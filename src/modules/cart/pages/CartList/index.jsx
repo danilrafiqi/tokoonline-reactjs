@@ -67,19 +67,15 @@ const CartList = () => {
   // };
 
   const debouncedValue = useDebounce(cartQuantity, 500);
-  // Effect for API call
-  useEffect(
-    () => {
-      if (debouncedValue) {
-        handleUpdateCart({
-          id: cartIdActive,
-          quantity: debouncedValue,
-          product_id: cartProductId,
-        });
-      }
-    },
-    [debouncedValue] // Only call effect if debounced search term changes
-  );
+  useEffect(() => {
+    if (debouncedValue) {
+      handleUpdateCart({
+        id: cartIdActive,
+        quantity: debouncedValue,
+        product_id: cartProductId,
+      });
+    }
+  }, [debouncedValue, cartIdActive, cartProductId, handleUpdateCart]);
 
   //#region WATCHER
   useEffect(() => {

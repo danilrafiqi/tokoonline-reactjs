@@ -82,19 +82,21 @@ const ProductList = () => {
           {/* //#endregion */}
 
           {/* //#region PAGINATION */}
-          <Pagination
-            active={pagination}
-            onClick={(v) => {
-              setPagination(v);
-              handleRetrieveProductList({
-                perPage: 8,
-                currentPage: v,
-              });
-            }}
-            limit={Math.ceil(
-              productPagination.total / productPagination.perPage
-            )}
-          />
+          {productPagination && (
+            <Pagination
+              active={pagination}
+              onClick={(v) => {
+                setPagination(v);
+                handleRetrieveProductList({
+                  perPage: 8,
+                  currentPage: v,
+                });
+              }}
+              limit={Math.ceil(
+                productPagination.total / productPagination.perPage
+              )}
+            />
+          )}
           {/* //#endregion */}
         </div>
       </div>

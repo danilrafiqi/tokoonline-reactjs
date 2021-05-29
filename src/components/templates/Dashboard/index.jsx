@@ -1,7 +1,8 @@
 import img from "@assets/img/index";
 import { useRetrieveCartListPagination } from "@commons/redux";
+import { cartAction } from "@commons/redux/cart/slice";
 import { CircleButton } from "@components/atoms/index";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { IoCartOutline, IoPersonOutline, IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -11,13 +12,13 @@ const Dashboard = (props) => {
   const cartListPagination = useRetrieveCartListPagination();
   const history = useHistory();
 
-  // const handleRetrieveCartList = useCallback(() => {
-  //   dispatch(cartAction.retrieveCartListExecute());
-  // }, [dispatch]);
+  const handleRetrieveCartList = useCallback(() => {
+    dispatch(cartAction.retrieveCartListExecute());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   handleRetrieveCartList();
-  // }, [handleRetrieveCartList]);
+  useEffect(() => {
+    handleRetrieveCartList();
+  }, [handleRetrieveCartList]);
 
   return (
     <div className="bg-white container mx-auto 2xl:max-w-7xl">
