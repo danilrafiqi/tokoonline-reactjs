@@ -10,7 +10,7 @@ const initialState = {
   ...retrieveCategoryListInitialState,
   action: "",
   retrieveCategoryListData: [],
-  retrieveCategoryListPagination: {},
+  retrieveCategoryListPagination: undefined,
 };
 
 const categorySlice = createSlice({

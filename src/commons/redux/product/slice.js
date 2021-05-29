@@ -17,8 +17,8 @@ const initialState = {
   ...retrieveProductDetailInitialState,
   action: "",
   retrieveProductListData: [],
-  retrieveProductListPagination: {},
-  retrieveProductDetailData: {},
+  retrieveProductListPagination: undefined,
+  retrieveProductDetailData: undefined,
 };
 
 const productSlice = createSlice({

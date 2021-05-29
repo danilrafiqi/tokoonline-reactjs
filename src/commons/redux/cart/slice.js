@@ -31,8 +31,8 @@ const initialState = {
   ...retrieveCartDetailInitialState,
   action: "",
   retrieveCartListData: [],
-  retrieveCartListPagination: {},
-  retrieveCartDetailData: {},
+  retrieveCartListPagination: undefined,
+  retrieveCartDetailData: undefined,
   retrieveCartListSelectedData: [],
 };
 

@@ -17,7 +17,7 @@ const initialState = {
   ...createAddressInitialState,
   action: "",
   retrieveAddressListData: [],
-  retrieveAddressListPagination: {},
+  retrieveAddressListPagination: undefined,
 };
 
 const addressSlice = createSlice({
