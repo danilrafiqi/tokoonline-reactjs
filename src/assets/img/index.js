@@ -1,3 +1,3 @@
-import logo from "./logo.png";
+import { default as logo, default as logo2 } from "./logo.png";
 
-export default { logo };
+export default { logo, logo2 };
